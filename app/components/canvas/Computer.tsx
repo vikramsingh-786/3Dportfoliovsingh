@@ -5,7 +5,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Preload, useGLTF, Float, Environment, Sphere, MeshDistortMaterial, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Floating Geometric Shape Component
 const FloatingShape = ({ position, scale, color, isMobile }: { 
   position: [number, number, number], 
   scale: number, 
@@ -22,7 +21,7 @@ const FloatingShape = ({ position, scale, color, isMobile }: {
     }
   });
 
-  if (isMobile && scale < 0.3) return null; // Don't render very small shapes on mobile
+  if (isMobile && scale < 0.3) return null;
 
   return (
     <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
@@ -32,7 +31,7 @@ const FloatingShape = ({ position, scale, color, isMobile }: {
           color={color}
           transparent
           opacity={0.8}
-          wireframe={!isMobile} // Solid on mobile for better visibility
+          wireframe={!isMobile}
           emissive={color}
           emissiveIntensity={0.2}
         />
@@ -41,7 +40,6 @@ const FloatingShape = ({ position, scale, color, isMobile }: {
   );
 };
 
-// Morphing Sphere Component
 const MorphingSphere = ({ isMobile }: { isMobile: boolean }) => {
   const sphereRef = useRef<THREE.Mesh>(null);
   
@@ -73,7 +71,6 @@ const MorphingSphere = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Particle System Component
 const ParticleField = ({ isMobile }: { isMobile: boolean }) => {
   const pointsRef = useRef<THREE.Points>(null);
   const particleCount = isMobile ? 1000 : 5000;
@@ -120,15 +117,14 @@ const ParticleField = ({ isMobile }: { isMobile: boolean }) => {
   );
 };
 
-// Enhanced Computer Model
 const Computer = ({ isMobile }: { isMobile: boolean }) => {
   const computer = useGLTF('/planets/scene.gltf');
-  const meshRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.1;
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.1;
     }
   });
 
@@ -136,19 +132,18 @@ const Computer = ({ isMobile }: { isMobile: boolean }) => {
     <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
       <ambientLight intensity={0.25} />
       <directionalLight position={[0, 0, 0.05]} />
-      <mesh ref={meshRef}>
+      <group ref={groupRef}>
         <primitive
           object={computer.scene}
           scale={isMobile ? 0.7 : 0.75}
           position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
           rotation={[-0.01, -0.2, -0.1]}
         />
-      </mesh>
+      </group>
     </Float>
   );
 };
 
-// 3D Text Component
 const FloatingText = ({ isMobile }: { isMobile: boolean }) => {
   const textRef = useRef<THREE.Mesh>(null);
   
@@ -159,7 +154,7 @@ const FloatingText = ({ isMobile }: { isMobile: boolean }) => {
     }
   });
 
-  if (isMobile) return null; // Hide text on mobile for better performance
+  if (isMobile) return null;
 
   return (
     <Text
@@ -180,7 +175,7 @@ const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)'); // Changed to 768px for tablet support
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
     setIsMobile(mediaQuery.matches);
 
     const handleMediaQueryChange = (event: MediaQueryListEvent) => {
@@ -211,10 +206,9 @@ const ComputersCanvas = () => {
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
           autoRotate
-          autoRotateSpeed={isMobile ? 0.3 : 0.5} // Slower rotation on mobile
+          autoRotateSpeed={isMobile ? 0.3 : 0.5}
         />
         
-        {/* Enhanced Lighting - simplified for mobile */}
         <ambientLight intensity={isMobile ? 0.2 : 0.15} />
         <pointLight intensity={isMobile ? 0.8 : 1} position={[10, 10, 10]} />
         {!isMobile && (
@@ -228,16 +222,13 @@ const ComputersCanvas = () => {
           />
         )}
         
-        {/* Environment - simpler on mobile */}
         <Environment preset={isMobile ? "dawn" : "night"} />
         
-        {/* 3D Elements */}
         <Computer isMobile={isMobile} />
         <ParticleField isMobile={isMobile} />
         <MorphingSphere isMobile={isMobile} />
         <FloatingText isMobile={isMobile} />
         
-        {/* Floating Geometric Shapes - fewer and larger on mobile */}
         {!isMobile && (
           <>
             <FloatingShape position={[-6, 1, -3]} scale={0.5} color="#FF6B6B" isMobile={isMobile} />
