@@ -61,16 +61,16 @@ const Contact = () => {
     const userToAdminParams = {
       from_name: form.name,
       from_email: form.email,
-      to_name: "Vikram Singh", // Admin name
-      to_email: "bobvik2003@gmail.com", // Fixed admin email
+      to_name: "Vikram Singh", 
+      to_email: "bobvik2003@gmail.com", 
       message: form.message,
       reply_to: form.email,
     };
 
     // Confirmation email to user
     const adminToUserParams = {
-      from_name: "Vikram Singh", // Admin name
-      from_email: "bobvik2003@gmail.com", // Fixed from admin email
+      from_name: "Vikram Singh", 
+      from_email: "bobvik2003@gmail.com", 
       to_name: form.name, // User's name
       to_email: form.email, // User's email
       message: "Thank you for contacting me! I will get back to you soon.",
