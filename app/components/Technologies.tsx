@@ -26,7 +26,7 @@ const Technologies = () => {
                   aria-pressed={group === g}
                   onClick={() => setGroup(g)}
                   className={`-mb-px border-b-2 pb-3 font-mono text-xs uppercase tracking-widest transition-colors ${
-                    group === g ? 'border-accent text-accent' : 'border-transparent text-mute hover:text-bone'
+                    group === g ? 'border-accent text-head' : 'border-transparent text-mute hover:text-bone'
                   }`}
                 >
                   {g}

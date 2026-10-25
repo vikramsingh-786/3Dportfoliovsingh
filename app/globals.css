@@ -4,23 +4,26 @@
 
 :root {
   color-scheme: dark;
-  /* space-separated RGB so Tailwind can apply alpha */
-  --void: 5 7 13;
-  --bone: 236 234 227;
-  --mute: 139 146 165;
-  --accent: 198 255 61;
-  --amber: 255 106 61;
-  --ice: 143 184 255;
+  /* space-separated RGB so Tailwind can apply alpha. Dark = night blue + cream. */
+  --void: 11 23 48;
+  --bone: 236 232 220;
+  --head: 236 232 220;
+  --mute: 160 170 190;
+  --accent: 239 238 50;
+  --amber: 255 90 79;
+  --ice: 108 155 224;
 }
 
+/* Light = cream paper, black text, deep-blue headings, red accent. */
 :root[data-theme='light'] {
   color-scheme: light;
-  --void: 244 241 233;
-  --bone: 11 15 26;
-  --mute: 88 96 116;
-  --accent: 47 43 255;
-  --amber: 217 56 30;
-  --ice: 36 86 200;
+  --void: 236 232 220;
+  --bone: 10 10 10;
+  --head: 23 55 111;
+  --mute: 85 85 80;
+  --accent: 228 51 42;
+  --amber: 36 74 152;
+  --ice: 52 101 167;
 }
 
 html {
@@ -29,7 +32,9 @@ html {
 }
 
 body {
-  font-family: var(--font-display), system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: rgb(var(--bone));
   background: rgb(var(--void));
   overflow-x: hidden;
@@ -45,15 +50,29 @@ body {
   outline-offset: 3px;
 }
 
+@layer base {
+  /* Compressed black display type, tight stack — headings only. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), Impact, sans-serif;
+    font-weight: 400 !important;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.88;
+    color: rgb(var(--head));
+  }
+}
+
 @layer components {
   .eyebrow {
-    @apply font-mono text-xs uppercase tracking-[0.25em] text-accent;
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-amber;
   }
   .btn {
     @apply inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors;
   }
   .btn-primary {
-    @apply btn bg-accent text-void hover:bg-bone;
+    @apply btn bg-head text-void hover:bg-accent;
   }
   .btn-ghost {
     @apply btn border border-line text-bone hover:border-accent hover:text-accent;

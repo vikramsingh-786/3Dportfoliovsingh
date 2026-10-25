@@ -4,10 +4,17 @@ import Image from 'next/image';
 import { achievements, education, experience, skillGroups, stats } from '../lib/data';
 import { Reveal, SectionHead } from './ui';
 
+// "The history": one chronological list, newest first.
+const history = [
+  { year: '2026', title: experience[0].role, org: experience[0].org, note: experience[0].note },
+  { year: '2024', title: experience[1].role, org: experience[1].org, note: experience[1].note },
+  { year: '2021', title: education.degree, org: education.school, note: education.period },
+];
+
 // Two-zone layout: this station's 3D object sits on the left, content on the right.
 const Row = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <Reveal className="grid gap-4 border-t border-line py-8 sm:grid-cols-[9rem_1fr]">
-    <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-mute">{label}</h3>
+    <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-mute">{label}</h3>
     <div>{children}</div>
   </Reveal>
 );
@@ -19,8 +26,8 @@ const About = () => (
         <SectionHead index="01" label="About" title="Design-minded *engineer.*" />
 
         <Reveal>
-          <p className="text-2xl leading-snug sm:text-3xl">
-            I&apos;m Vikram — an Associate Software Engineer at <span className="text-accent">CoinSwitch</span>, building trading tools with Go and Next.js. I care as much
+          <p className="text-2xl leading-tight sm:text-4xl">
+            I&apos;m Vikram — an Associate Software Engineer at <mark className="bg-[#efee32] px-1 text-black">CoinSwitch</mark>, building trading tools with Go and Next.js. I care as much
             about how a product feels as how it&apos;s built.
           </p>
         </Reveal>
@@ -32,30 +39,26 @@ const About = () => (
           <dl className="grid flex-1 grid-cols-3 gap-6">
             {stats.map((s) => (
               <div key={s.label} className="border-l border-line pl-4">
-                <dd className="text-3xl font-bold tracking-tight sm:text-5xl">{s.value}</dd>
-                <dt className="mt-1 font-mono text-[10px] uppercase tracking-widest text-mute sm:text-xs">{s.label}</dt>
+                <dd className="font-display text-5xl leading-none text-head sm:text-7xl">{s.value}</dd>
+                <dt className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-mute sm:text-xs">{s.label}</dt>
               </div>
             ))}
           </dl>
         </Reveal>
 
-        <Row label="Experience">
-          <ol className="space-y-8">
-            {experience.map((e) => (
-              <li key={e.role + e.period}>
-                <p className="font-mono text-xs text-amber">{e.period}</p>
-                <h4 className="mt-1 text-xl font-semibold">{e.role}</h4>
-                <p className="text-sm text-accent">{e.org}</p>
-                <p className="mt-2 text-sm leading-relaxed text-mute">{e.note}</p>
+        <Row label="The history">
+          <ol className="space-y-10">
+            {history.map((h) => (
+              <li key={h.year} className="grid gap-2 sm:grid-cols-[8rem_1fr]">
+                <p className="font-display text-6xl leading-none text-accent">{h.year}</p>
+                <div>
+                  <h4 className="text-xl font-semibold">{h.title}</h4>
+                  <p className="text-sm font-semibold text-amber">{h.org}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-mute">{h.note}</p>
+                </div>
               </li>
             ))}
           </ol>
-        </Row>
-
-        <Row label="Education">
-          <p className="font-mono text-xs text-amber">{education.period}</p>
-          <h4 className="mt-1 text-xl font-semibold">{education.degree}</h4>
-          <p className="text-sm text-accent">{education.school}</p>
         </Row>
 
         <Row label="Skills">

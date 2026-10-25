@@ -61,7 +61,7 @@ const Contact = () => {
           <SectionHead index="05" label="Contact" title="Let's build *something.*" />
 
           <Reveal>
-            <a href={`mailto:${profile.email}`} className="mb-12 block break-all text-3xl font-bold tracking-tight transition-colors hover:text-accent sm:text-5xl">
+            <a href={`mailto:${profile.email}`} className="mb-12 block break-all font-display text-5xl uppercase leading-none text-head transition-colors hover:text-accent sm:text-7xl">
               {profile.email}
             </a>
             <form onSubmit={onSubmit} className="space-y-8">
@@ -82,7 +82,7 @@ const Contact = () => {
                 {loading ? 'Sending…' : 'Send message'}
               </button>
 
-              <p role="status" aria-live="polite" className={`text-sm ${status.type === 'error' ? 'text-amber' : 'text-accent'}`}>
+              <p role="status" aria-live="polite" className={`text-sm ${status.type === 'error' ? 'text-amber' : 'text-head'}`}>
                 {status.message}
               </p>
             </form>

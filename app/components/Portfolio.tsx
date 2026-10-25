@@ -23,7 +23,7 @@ const Portfolio = () => (
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-mute">{p.desc}</p>
                   <p className="mt-4 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-bone/70">{p.tags.join(' · ')}</p>
                   <div className="mt-5 flex gap-6 text-sm">
-                    <a href={p.demo} target="_blank" rel="noopener noreferrer" className="font-medium text-accent hover:text-bone" aria-label={`${p.title} live demo (opens in new tab)`}>
+                    <a href={p.demo} target="_blank" rel="noopener noreferrer" className="font-semibold text-head underline decoration-accent decoration-2 underline-offset-4 hover:text-accent" aria-label={`${p.title} live demo (opens in new tab)`}>
                       Live demo ↗
                     </a>
                     <a href={p.code} target="_blank" rel="noopener noreferrer" className="text-mute hover:text-bone" aria-label={`${p.title} source code (opens in new tab)`}>

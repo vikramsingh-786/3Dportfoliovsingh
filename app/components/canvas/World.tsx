@@ -8,8 +8,8 @@ import { updateStation, world } from '../../lib/scroll';
 
 const GAP = 30; // z distance between stations
 const PALETTES = {
-  dark: { bg: '#05070D', star: '#cfd8ff', accent: '#C6FF3D', amber: '#FF6A3D', ice: '#8FB8FF', ambient: 0.5 },
-  light: { bg: '#F4F1E9', star: '#2a3350', accent: '#2F2BFF', amber: '#D9381E', ice: '#2456C8', ambient: 1.1 },
+  dark: { bg: '#0B1730', star: '#ECE8DC', accent: '#EFEE32', amber: '#FF5A4F', ice: '#6C9BE0', ambient: 0.6 },
+  light: { bg: '#ECE8DC', star: '#17376F', accent: '#E4332A', amber: '#244A98', ice: '#E6C500', ambient: 1.1 },
 };
 const PalCtx = createContext(PALETTES.dark);
 const usePal = () => useContext(PalCtx);
@@ -217,7 +217,7 @@ function Scene({ mobile, reduced, light }: Env) {
 }
 
 export default function World() {
-  const [env, setEnv] = useState<Env>({ mobile: false, reduced: false, light: false });
+  const [env, setEnv] = useState<Env>({ mobile: false, reduced: false, light: true });
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 768px)');

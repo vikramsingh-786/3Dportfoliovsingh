@@ -1,11 +1,11 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
-import { Space_Grotesk, JetBrains_Mono, Instrument_Serif } from 'next/font/google';
+import { Anton, Inter_Tight, Instrument_Serif } from 'next/font/google';
 import './globals.css';
 
-const display = Space_Grotesk({ subsets: ['latin'], variable: '--font-display' });
+const display = Anton({ subsets: ['latin'], weight: '400', variable: '--font-display' });
 const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: 'italic', variable: '--font-serif' });
-const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+const body = Inter_Tight({ subsets: ['latin'], weight: ['500', '600'], variable: '--font-body' });
 
 export const metadata: Metadata = {
   title: 'Vikram Singh — Full-Stack Developer & UI Designer',
@@ -31,11 +31,11 @@ export const metadata: Metadata = {
 };
 
 // Runs before paint so the saved/system theme is applied without a flash.
-const themeInit = `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='dark'}`;
+const themeInit = `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${display.variable} ${mono.variable} ${serif.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${serif.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>

@@ -20,13 +20,13 @@ export const SectionHead = ({ index, label, title }: { index: string; label: str
   <Reveal className="mb-14">
     <p className="eyebrow flex items-center gap-4">
       <span>{index}</span>
-      <span aria-hidden className="h-px w-12 bg-accent" />
+      <span aria-hidden className="h-0.5 w-12 bg-accent" />
       <span>{label}</span>
     </p>
-    <h2 className="mt-5 text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+    <h2 className="mt-5 text-7xl sm:text-8xl lg:text-9xl">
       {title.split('*').map((part, i) =>
         i % 2 ? (
-          <em key={i} className="font-serif font-normal italic text-accent">
+          <em key={i} className="font-serif font-normal normal-case italic text-accent">
             {part}
           </em>
         ) : (

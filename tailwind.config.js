@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         void: 'rgb(var(--void) / <alpha-value>)',
         bone: 'rgb(var(--bone) / <alpha-value>)',
+        head: 'rgb(var(--head) / <alpha-value>)',
         mute: 'rgb(var(--mute) / <alpha-value>)',
         accent: 'rgb(var(--accent) / <alpha-value>)',
         amber: 'rgb(var(--amber) / <alpha-value>)',
@@ -13,9 +14,9 @@ module.exports = {
         line: 'rgb(var(--bone) / 0.12)',
       },
       fontFamily: {
-        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Impact', 'sans-serif'],
         serif: ['var(--font-serif)', 'Georgia', 'serif'],
-        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+        mono: ['var(--font-body)', 'system-ui', 'sans-serif'], // legacy class name; maps to body font
       },
     },
   },
