@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { profile, socials } from '../lib/data';
 
@@ -7,6 +8,9 @@ const Hero = () => (
   <section id="top" data-station className="relative flex min-h-screen items-center px-6 pt-24">
     <div className="mx-auto w-full max-w-7xl">
       <div className="max-w-2xl">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }} className="relative mb-6 h-28 w-28 overflow-hidden rounded-full border-2 border-accent p-1 sm:h-36 sm:w-36">
+          <Image src="/hero.png" alt="Portrait of Vikram Singh" fill priority sizes="144px" className="rounded-full object-cover object-top" />
+        </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="eyebrow">
           Portfolio — {new Date().getFullYear()}
         </motion.p>

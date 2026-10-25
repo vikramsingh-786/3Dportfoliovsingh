@@ -25,7 +25,7 @@ const About = () => (
         </Reveal>
 
         <Reveal delay={0.2} className="mt-8 flex items-stretch gap-4">
-          <TiltCard className="panel relative hidden w-32 shrink-0 overflow-hidden p-1.5 sm:block">
+          <TiltCard className="panel relative w-24 shrink-0 overflow-hidden p-1.5 sm:w-32">
             <Image src="/hero.png" alt="Portrait of Vikram Singh" fill sizes="128px" className="rounded-xl object-cover" />
           </TiltCard>
           <dl className="grid flex-1 grid-cols-3 gap-4">
