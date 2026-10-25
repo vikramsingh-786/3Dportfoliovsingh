@@ -37,7 +37,9 @@ const Technologies = () => {
         <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7">
           {shown.map((t) => (
             <li key={t.name} className="panel group flex flex-col items-center gap-3 p-4 transition-colors hover:border-accent">
-              <Image src={t.icon} alt="" width={40} height={40} className="h-10 w-10 object-contain transition-transform group-hover:scale-110" />
+              <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/90 p-2">
+                <Image src={t.icon} alt="" width={40} height={40} className="h-10 w-10 object-contain transition-transform group-hover:scale-110" />
+              </span>
               <span className="text-center text-xs text-mute group-hover:text-bone">{t.name}</span>
             </li>
           ))}

@@ -4,27 +4,44 @@
 
 :root {
   color-scheme: dark;
+  /* space-separated RGB so Tailwind can apply alpha */
+  --void: 5 7 13;
+  --bone: 236 234 227;
+  --mute: 139 146 165;
+  --accent: 124 245 200;
+  --amber: 255 184 107;
+  --ice: 143 184 255;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --void: 244 241 233;
+  --bone: 11 15 26;
+  --mute: 88 96 116;
+  --accent: 10 122 90;
+  --amber: 168 92 0;
+  --ice: 36 86 200;
 }
 
 html {
   scroll-behavior: smooth;
-  background: #05070d;
+  background: rgb(var(--void));
 }
 
 body {
   font-family: var(--font-display), system-ui, sans-serif;
-  color: #eceae3;
-  background: #05070d;
+  color: rgb(var(--bone));
+  background: rgb(var(--void));
   overflow-x: hidden;
 }
 
 ::selection {
-  background: #7cf5c8;
-  color: #05070d;
+  background: rgb(var(--accent));
+  color: rgb(var(--void));
 }
 
 :focus-visible {
-  outline: 2px solid #7cf5c8;
+  outline: 2px solid rgb(var(--accent));
   outline-offset: 3px;
 }
 

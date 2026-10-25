@@ -23,9 +23,43 @@ export const navLinks = [
 ];
 
 export const stats = [
-  { value: '20+', label: 'Projects shipped' },
-  { value: '2+', label: 'Years building' },
-  { value: '25+', label: 'Tools in the kit' },
+  { value: '800+', label: 'Problems solved' },
+  { value: '5★', label: 'CodeChef' },
+  { value: 'Knight', label: 'LeetCode' },
+];
+
+export const experience = [
+  {
+    role: 'Associate Software Engineer',
+    org: 'CoinSwitch · Bengaluru',
+    period: 'Jul 2026 — Present',
+    note: 'Promoted from SDE Intern (Jan 2026). Building Lemonn RA, a B2B trading-signal platform for Research Analysts: Go microservice integration, OTP/JWT auth, the signal lifecycle in Next.js/TypeScript, feature flags, Telegram config, Docker builds and CSP hardening.',
+  },
+  {
+    role: 'Frontend Developer Intern',
+    org: 'Techies Gateway · Remote',
+    period: 'Jul 2024 — Jun 2025',
+    note: 'Built React and Redux applications.',
+  },
+];
+
+export const education = {
+  degree: 'Integrated B.Tech (IT) + MBA',
+  school: 'ABV-IIITM Gwalior',
+  period: 'Jul 2021 — Jun 2026',
+};
+
+export const achievements = [
+  'CodeChef 5-Star, LeetCode Knight, Codeforces Specialist — 800+ problems solved',
+  "Led Urja '23, a 200+ participant event",
+  'Certifications from FreeCodeCamp, Scaler and Lets GradeUp',
+];
+
+export const skillGroups = [
+  { name: 'Languages', items: ['C/C++', 'Go', 'JavaScript', 'TypeScript', 'Python', 'Java', 'SQL'] },
+  { name: 'Frameworks', items: ['Node.js', 'Express', 'FastAPI', 'React', 'Next.js', 'Redux'] },
+  { name: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'] },
+  { name: 'DevOps', items: ['Docker', 'CI/CD'] },
 ];
 
 export const services = [

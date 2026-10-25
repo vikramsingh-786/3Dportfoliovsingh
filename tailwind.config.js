@@ -4,14 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        void: '#05070D',
-        ink: '#0C1018',
-        bone: '#ECEAE3',
-        mute: '#8B92A5',
-        line: 'rgba(236,234,227,0.12)',
-        accent: '#7CF5C8',
-        amber: '#FFB86B',
-        ice: '#8FB8FF',
+        void: 'rgb(var(--void) / <alpha-value>)',
+        bone: 'rgb(var(--bone) / <alpha-value>)',
+        mute: 'rgb(var(--mute) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        amber: 'rgb(var(--amber) / <alpha-value>)',
+        ice: 'rgb(var(--ice) / <alpha-value>)',
+        line: 'rgb(var(--bone) / 0.12)',
       },
       fontFamily: {
         display: ['var(--font-display)', 'system-ui', 'sans-serif'],

@@ -1,17 +1,20 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, useGLTF } from '@react-three/drei';
 import { updateStation, world } from '../../lib/scroll';
 
 const GAP = 30; // z distance between stations
-const ACCENT = '#7CF5C8';
-const AMBER = '#FFB86B';
-const ICE = '#8FB8FF';
+const PALETTES = {
+  dark: { bg: '#05070D', star: '#cfd8ff', accent: '#7CF5C8', amber: '#FFB86B', ice: '#8FB8FF', ambient: 0.5 },
+  light: { bg: '#F4F1E9', star: '#2a3350', accent: '#0A7A5A', amber: '#C26A00', ice: '#2456C8', ambient: 1.1 },
+};
+const PalCtx = createContext(PALETTES.dark);
+const usePal = () => useContext(PalCtx);
 
-type Env = { mobile: boolean; reduced: boolean };
+type Env = { mobile: boolean; reduced: boolean; light: boolean };
 
 // Anything that spins: speed is zeroed for reduced-motion users.
 function useSpin(ref: React.RefObject<THREE.Object3D>, speed: [number, number], reduced: boolean) {
@@ -37,6 +40,7 @@ function Rig({ reduced }: { reduced: boolean }) {
 
 // Star tunnel along the whole flight path.
 function Stars({ count }: { count: number }) {
+  const pal = usePal();
   const positions = useMemo(() => {
     const a = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -51,7 +55,7 @@ function Stars({ count }: { count: number }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
       </bufferGeometry>
-      <pointsMaterial size={0.12} color="#cfd8ff" transparent opacity={0.75} sizeAttenuation depthWrite={false} />
+      <pointsMaterial size={0.12} color={pal.star} transparent opacity={0.75} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
@@ -94,6 +98,7 @@ function Ring({ radius, tilt, color, speed, reduced }: { radius: number; tilt: [
 }
 
 function HeroStation({ reduced }: { reduced: boolean }) {
+  const { accent: ACCENT, amber: AMBER, ice: ICE } = usePal();
   return (
     <group>
       <Suspense fallback={null}>
@@ -106,6 +111,7 @@ function HeroStation({ reduced }: { reduced: boolean }) {
 }
 
 function AboutStation({ reduced }: { reduced: boolean }) {
+  const { accent: ACCENT, amber: AMBER, ice: ICE } = usePal();
   const ref = useRef<THREE.Mesh>(null);
   useSpin(ref, [0.12, 0.2], reduced);
   return (
@@ -119,6 +125,7 @@ function AboutStation({ reduced }: { reduced: boolean }) {
 }
 
 function ServicesStation({ reduced }: { reduced: boolean }) {
+  const { accent: ACCENT, amber: AMBER, ice: ICE } = usePal();
   const group = useRef<THREE.Group>(null);
   useSpin(group, [0, 0.15], reduced);
   const items = Array.from({ length: 6 });
@@ -140,6 +147,7 @@ function ServicesStation({ reduced }: { reduced: boolean }) {
 }
 
 function TechStation({ reduced }: { reduced: boolean }) {
+  const { accent: ACCENT, amber: AMBER, ice: ICE } = usePal();
   const a = useRef<THREE.Mesh>(null);
   const b = useRef<THREE.Mesh>(null);
   const c = useRef<THREE.Mesh>(null);
@@ -157,6 +165,7 @@ function TechStation({ reduced }: { reduced: boolean }) {
 }
 
 function WorkStation({ reduced }: { reduced: boolean }) {
+  const { accent: ACCENT, amber: AMBER, ice: ICE } = usePal();
   const ref = useRef<THREE.Mesh>(null);
   useSpin(ref, [0.1, 0.15], reduced);
   return (
@@ -168,6 +177,7 @@ function WorkStation({ reduced }: { reduced: boolean }) {
 }
 
 function ContactStation({ reduced }: { reduced: boolean }) {
+  const { accent: ACCENT, amber: AMBER, ice: ICE } = usePal();
   return (
     <group>
       <Float speed={reduced ? 0 : 1} floatIntensity={0.8}>
@@ -184,12 +194,13 @@ function ContactStation({ reduced }: { reduced: boolean }) {
 
 const stations = [HeroStation, AboutStation, ServicesStation, TechStation, WorkStation, ContactStation];
 
-function Scene({ mobile, reduced }: Env) {
+function Scene({ mobile, reduced, light }: Env) {
+  const pal = light ? PALETTES.light : PALETTES.dark;
   return (
-    <>
-      <color attach="background" args={['#05070D']} />
-      <fog attach="fog" args={['#05070D', 25, 95]} />
-      <ambientLight intensity={0.5} />
+    <PalCtx.Provider value={pal}>
+      <color attach="background" args={[pal.bg]} />
+      <fog attach="fog" args={[pal.bg, 25, 95]} />
+      <ambientLight intensity={pal.ambient} />
       <directionalLight position={[8, 10, 6]} intensity={1.4} color="#ffffff" />
       <Rig reduced={reduced} />
       <Stars count={mobile ? 600 : 1800} />
@@ -199,17 +210,20 @@ function Scene({ mobile, reduced }: Env) {
           <Station reduced={reduced} />
         </group>
       ))}
-    </>
+    </PalCtx.Provider>
   );
 }
 
 export default function World() {
-  const [env, setEnv] = useState<Env>({ mobile: false, reduced: false });
+  const [env, setEnv] = useState<Env>({ mobile: false, reduced: false, light: false });
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 768px)');
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const sync = () => setEnv({ mobile: mq.matches, reduced: rm.matches });
+    const isLight = () => document.documentElement.dataset.theme === 'light';
+    const sync = () => setEnv({ mobile: mq.matches, reduced: rm.matches, light: isLight() });
+    const themeObs = new MutationObserver(sync);
+    themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     sync();
     mq.addEventListener('change', sync);
     rm.addEventListener('change', sync);
@@ -232,6 +246,7 @@ export default function World() {
       window.removeEventListener('resize', onScroll);
       window.removeEventListener('pointermove', onMove);
       clearTimeout(t);
+      themeObs.disconnect();
     };
   }, []);
 

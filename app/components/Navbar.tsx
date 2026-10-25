@@ -3,6 +3,29 @@
 import { useEffect, useState } from 'react';
 import { navLinks, profile } from '../lib/data';
 
+const ThemeToggle = () => {
+  const [light, setLight] = useState(false);
+  useEffect(() => setLight(document.documentElement.dataset.theme === 'light'), []);
+  const toggle = () => {
+    const next = light ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+    setLight(!light);
+  };
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={light ? 'Switch to dark mode' : 'Switch to light mode'}
+      className="rounded-full border border-line px-3 py-2 font-mono text-xs uppercase tracking-widest text-mute transition-colors hover:border-accent hover:text-accent"
+    >
+      {light ? 'Dark' : 'Light'}
+    </button>
+  );
+};
+
 const Navbar = () => {
   const [active, setActive] = useState('');
   const [open, setOpen] = useState(false);
@@ -48,6 +71,8 @@ const Navbar = () => {
           ))}
         </ul>
 
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
         <button
           type="button"
           className="md:hidden rounded-full border border-line px-4 py-2 font-mono text-xs"
@@ -57,6 +82,7 @@ const Navbar = () => {
         >
           {open ? 'CLOSE' : 'MENU'}
         </button>
+        </div>
       </nav>
 
       {open && (
