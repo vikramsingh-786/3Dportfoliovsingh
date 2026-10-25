@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { navLinks, profile } from '../lib/data';
+import { EXPO } from './ui';
 
 const ThemeToggle = () => {
   const [light, setLight] = useState(true);
@@ -19,7 +21,7 @@ const ThemeToggle = () => {
       type="button"
       onClick={toggle}
       aria-label={light ? 'Switch to dark mode' : 'Switch to light mode'}
-      className="rounded-full border border-line px-4 py-2 text-xs font-semibold uppercase tracking-widest transition-colors hover:border-accent hover:text-accent"
+      className="min-h-11 rounded-full border border-line px-4 py-2 text-xs font-semibold uppercase tracking-widest transition-colors hover:border-accent hover:text-accent"
     >
       {light ? 'Dark' : 'Light'}
     </button>
@@ -30,6 +32,7 @@ const ThemeToggle = () => {
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const reduced = !!useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -51,7 +54,7 @@ const Navbar = () => {
   return (
     <>
       <header className={`fixed inset-x-0 top-0 z-[70] transition-colors ${scrolled && !open ? 'bg-void/80 backdrop-blur-md' : ''}`}>
-        <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
           <a href="#top" onClick={() => setOpen(false)} className="font-display text-3xl uppercase leading-none text-head" aria-label={`${profile.name} — back to top`}>
             VS<span className="text-accent">.</span>
           </a>
@@ -62,7 +65,7 @@ const Navbar = () => {
               aria-expanded={open}
               aria-controls="chapters"
               onClick={() => setOpen((o) => !o)}
-              className="rounded-full bg-head px-5 py-2 text-xs font-semibold uppercase tracking-widest text-void transition-colors hover:bg-accent"
+              className="min-h-11 rounded-full bg-head px-5 py-2 text-xs font-semibold uppercase tracking-widest text-void transition-colors hover:bg-accent"
             >
               {open ? 'Close' : 'Menu'}
             </button>
@@ -70,27 +73,43 @@ const Navbar = () => {
         </nav>
       </header>
 
-      {open && (
-        <div id="chapters" role="dialog" aria-modal="true" aria-label="Chapters" className="fixed inset-0 z-[65] overflow-y-auto bg-void px-6 pb-12 pt-28">
-          <div className="mx-auto max-w-7xl">
-            <p className="eyebrow mb-6">Chapters</p>
-            <ol className="border-t border-line">
-              {navLinks.map(({ id, title }, i) => (
-                <li key={id}>
-                  <a
-                    href={`#${id}`}
-                    onClick={() => setOpen(false)}
-                    className="flex items-baseline gap-5 border-b border-line py-3 font-display text-[clamp(3.5rem,12vw,10rem)] uppercase leading-[0.9] text-head transition-colors hover:text-accent"
-                  >
-                    <span className="font-body text-sm font-semibold text-amber">{i + 1}.</span>
-                    {title}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="chapters"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Chapters"
+            className="fixed inset-0 z-[65] overflow-y-auto bg-void px-6 pb-12 pt-28"
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: reduced ? 0 : 0.8, ease: EXPO }}
+          >
+            <div className="mx-auto max-w-7xl">
+              <p className="eyebrow mb-6">Chapters</p>
+              <ol className="border-t border-line">
+                {navLinks.map(({ id, title }, i) => (
+                  // Each row is a clip; its link slides up out of it, staggered.
+                  <li key={id} className="overflow-hidden border-b border-line">
+                    <motion.a
+                      href={`#${id}`}
+                      onClick={() => setOpen(false)}
+                      className="flex items-baseline gap-5 py-3 font-display text-[clamp(3.5rem,12vw,10rem)] uppercase leading-[0.9] text-head transition-colors duration-300 hover:text-accent"
+                      initial={reduced ? false : { y: '110%' }}
+                      animate={{ y: 0 }}
+                      transition={{ duration: 0.9, delay: 0.25 + i * 0.07, ease: EXPO }}
+                    >
+                      <span className="font-body text-sm font-semibold text-amber">{i + 1}.</span>
+                      {title}
+                    </motion.a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -31,13 +31,16 @@ export const metadata: Metadata = {
 };
 
 // Runs before paint so the saved/system theme is applied without a flash.
-const themeInit = `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}`;
+const themeInit = `try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='light'}document.documentElement.dataset.theme=t;if(sessionStorage.getItem('dy-entered'))document.documentElement.classList.add('is-entered')}catch(e){document.documentElement.dataset.theme='light'}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${serif.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <noscript>
+          <style>{'.preload{display:none!important}'}</style>
+        </noscript>
       </head>
       <body className="antialiased">{children}</body>
     </html>

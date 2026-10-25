@@ -11,6 +11,7 @@ import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { ScrollProgress } from './components/ui';
+import Preload from './components/Preload';
 
 // WebGL only runs in the browser.
 const World = dynamic(() => import('./components/canvas/World'), { ssr: false });
@@ -22,6 +23,7 @@ export default function Home() {
       <a href="#about" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-void">
         Skip to content
       </a>
+      <Preload />
       <ScrollProgress />
       <Navbar />
       <main className="relative z-10">

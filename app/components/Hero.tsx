@@ -3,15 +3,18 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { profile, socials } from '../lib/data';
+import { EXPO, SplitText, useEntered } from './ui';
 
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 50 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.9, delay, ease: [0.2, 0.65, 0.3, 0.9] as const },
-});
-
-const Hero = () => (
-  <section id="top" data-station className="relative flex min-h-screen flex-col px-6 pb-10 pt-28">
+const Hero = () => {
+  const entered = useEntered();
+  // Everything waits for the Enter cover, then rises in.
+  const rise = (delay: number) => ({
+    initial: { opacity: 0, y: 40 },
+    animate: entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
+    transition: { duration: 0.9, delay, ease: EXPO },
+  });
+  return (
+  <section id="top" data-station className="relative flex min-h-[100svh] flex-col px-6 pb-10 pt-24 sm:pt-28">
     <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-between">
       <motion.div {...rise(0.1)} className="flex items-start justify-between text-xs font-semibold uppercase tracking-[0.2em] text-mute">
         <p>Portfolio — {new Date().getFullYear()}</p>
@@ -19,13 +22,13 @@ const Hero = () => (
       </motion.div>
 
       {/* Stacked wordmark: compressed black caps, serif italic second line. */}
-      <h1 className="my-8 text-[clamp(7rem,30vw,28rem)] leading-[0.78]">
-        <motion.span className="block" {...rise(0.25)}>
-          Vikram
-        </motion.span>
-        <motion.span className="block font-serif normal-case italic text-accent" style={{ lineHeight: 0.9 }} {...rise(0.4)}>
-          Singh
-        </motion.span>
+      <h1 className="my-8 text-[clamp(6rem,31vw,28rem)] leading-[0.78]">
+        <span className="block">
+          <SplitText text="Vikram" by="char" when="enter" delay={0.15} />
+        </span>
+        <span className="block font-serif normal-case italic text-accent" style={{ lineHeight: 0.9 }}>
+          <SplitText text="Singh" by="char" when="enter" delay={0.45} />
+        </span>
       </h1>
 
       <motion.div {...rise(0.6)} className="grid items-end gap-8 md:grid-cols-[auto_1fr_auto]">
@@ -47,10 +50,10 @@ const Hero = () => (
               Download CV
             </a>
           </div>
-          <ul className="flex gap-5">
+          <ul className="flex flex-wrap gap-x-5">
             {socials.map((s) => (
               <li key={s.name}>
-                <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold uppercase tracking-widest text-mute transition-colors hover:text-accent">
+                <a href={s.url} target="_blank" rel="noopener noreferrer" className="link-line inline-block py-2 text-xs font-semibold uppercase tracking-widest text-mute transition-colors hover:text-accent">
                   {s.name}
                 </a>
               </li>
@@ -60,6 +63,7 @@ const Hero = () => (
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default Hero;

@@ -25,7 +25,7 @@ const Technologies = () => {
                   type="button"
                   aria-pressed={group === g}
                   onClick={() => setGroup(g)}
-                  className={`-mb-px border-b-2 pb-3 font-mono text-xs uppercase tracking-widest transition-colors ${
+                  className={`-mb-px border-b-2 py-2 pb-3 font-mono text-xs uppercase tracking-widest transition-colors ${
                     group === g ? 'border-accent text-head' : 'border-transparent text-mute hover:text-bone'
                   }`}
                 >

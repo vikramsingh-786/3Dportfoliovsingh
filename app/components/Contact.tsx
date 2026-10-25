@@ -61,7 +61,7 @@ const Contact = () => {
           <SectionHead index="05" label="Contact" title="Let's build *something.*" />
 
           <Reveal>
-            <a href={`mailto:${profile.email}`} className="mb-12 block break-all font-display text-5xl uppercase leading-none text-head transition-colors hover:text-accent sm:text-7xl">
+            <a href={`mailto:${profile.email}`} className="mb-12 block break-all font-display text-4xl uppercase leading-none text-head transition-colors hover:text-accent sm:text-6xl lg:text-7xl">
               {profile.email}
             </a>
             <form onSubmit={onSubmit} className="space-y-8">
@@ -78,7 +78,7 @@ const Contact = () => {
                 <textarea id="message" name="message" rows={5} required value={form.message} onChange={onChange} placeholder="Tell me about your project" className={`${field} resize-none`} />
               </div>
 
-              <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60">
+              <button type="submit" disabled={loading} className="btn-primary w-full justify-center disabled:opacity-60 sm:w-auto">
                 {loading ? 'Sending…' : 'Send message'}
               </button>
 
@@ -90,7 +90,7 @@ const Contact = () => {
 
           <Reveal delay={0.1} className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-6 font-mono text-xs uppercase tracking-widest text-mute">
             {socials.map((s) => (
-              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="link-line hover:text-accent">
                 {s.name}
               </a>
             ))}

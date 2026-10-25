@@ -220,7 +220,7 @@ export default function World() {
   const [env, setEnv] = useState<Env>({ mobile: false, reduced: false, light: true });
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)');
+    const mq = window.matchMedia('(max-width: 1023px)');
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)');
     const isLight = () => document.documentElement.dataset.theme === 'light';
     const sync = () => setEnv({ mobile: mq.matches, reduced: rm.matches, light: isLight() });

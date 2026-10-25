@@ -14,7 +14,7 @@ const Services = () => (
             <li key={s.title} className="group border-t border-line">
               <Reveal className="grid gap-3 py-7 sm:grid-cols-[3rem_1fr] md:grid-cols-[3rem_1fr_1fr]">
                 <span className="pt-2 font-mono text-xs text-amber">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="text-3xl font-semibold tracking-tight transition-colors group-hover:text-accent sm:text-4xl">{s.title}</h3>
+                <h3 className="text-3xl font-semibold tracking-tight transition-colors group-hover:text-accent sm:text-4xl break-words">{s.title}</h3>
                 <ul className="space-y-1 pt-2 font-mono text-xs text-mute sm:col-start-2 md:col-start-3">
                   {s.features.map((f) => (
                     <li key={f}>{f}</li>

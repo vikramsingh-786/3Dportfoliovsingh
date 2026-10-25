@@ -1,8 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { achievements, education, experience, skillGroups, stats } from '../lib/data';
-import { Reveal, SectionHead } from './ui';
+import { ParallaxImage, Reveal, SectionHead } from './ui';
 
 // "The history": one chronological list, newest first.
 const history = [
@@ -26,20 +25,18 @@ const About = () => (
         <SectionHead index="01" label="About" title="Design-minded *engineer.*" />
 
         <Reveal>
-          <p className="text-2xl leading-tight sm:text-4xl">
+          <p className="text-2xl leading-tight sm:text-3xl lg:text-4xl">
             I&apos;m Vikram — an Associate Software Engineer at <mark className="bg-[#efee32] px-1 text-black">CoinSwitch</mark>, building trading tools with Go and Next.js. I care as much
             about how a product feels as how it&apos;s built.
           </p>
         </Reveal>
 
-        <Reveal delay={0.1} className="my-12 flex items-center gap-8">
-          <div className="relative h-36 w-28 shrink-0 overflow-hidden rounded-xl border border-line">
-            <Image src="/hero.png" alt="Portrait of Vikram Singh" fill sizes="112px" className="object-cover grayscale transition duration-500 hover:grayscale-0" />
-          </div>
-          <dl className="grid flex-1 grid-cols-3 gap-6">
+        <Reveal delay={0.1} className="my-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <ParallaxImage src="/hero.png" alt="Portrait of Vikram Singh" sizes="112px" className="h-36 w-28 shrink-0 rounded-xl border border-line" imgClassName="grayscale transition duration-500 hover:grayscale-0" />
+          <dl className="grid w-full flex-1 grid-cols-3 gap-4 sm:gap-6">
             {stats.map((s) => (
-              <div key={s.label} className="border-l border-line pl-4">
-                <dd className="font-display text-5xl leading-none text-head sm:text-7xl">{s.value}</dd>
+              <div key={s.label} className="border-l border-line pl-3 sm:pl-4">
+                <dd className="font-display text-3xl leading-none text-head sm:text-4xl xl:text-5xl">{s.value}</dd>
                 <dt className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-mute sm:text-xs">{s.label}</dt>
               </div>
             ))}
