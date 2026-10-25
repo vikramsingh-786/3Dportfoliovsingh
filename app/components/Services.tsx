@@ -1,44 +1,40 @@
 'use client';
 
 import { process, services } from '../lib/data';
-import { Reveal, SectionHead, TiltCard } from './ui';
+import { Reveal, SectionHead } from './ui';
 
 const Services = () => (
-  <section id="services" data-station className="relative flex min-h-screen items-center px-6 py-24">
+  <section id="services" data-station className="relative px-6 py-28">
     <div className="mx-auto w-full max-w-7xl">
-      <SectionHead index="02" label="Services" title="What I can build for you." />
+      <div className="lg:w-[60%]">
+        <SectionHead index="02" label="Services" title="What I can *build.*" />
 
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {services.map((s, i) => (
-          <li key={s.title}>
-            <Reveal delay={i * 0.06} className="h-full">
-              <TiltCard className="panel h-full p-6">
-                <p className="font-mono text-xs text-amber">{String(i + 1).padStart(2, '0')}</p>
-                <h3 className="mt-3 text-xl font-semibold">{s.title}</h3>
-                <ul className="mt-4 space-y-2 text-sm text-mute">
+        <ul className="border-b border-line">
+          {services.map((s, i) => (
+            <li key={s.title} className="group border-t border-line">
+              <Reveal className="grid gap-3 py-7 sm:grid-cols-[3rem_1fr] md:grid-cols-[3rem_1fr_1fr]">
+                <span className="pt-2 font-mono text-xs text-amber">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="text-3xl font-semibold tracking-tight transition-colors group-hover:text-accent sm:text-4xl">{s.title}</h3>
+                <ul className="space-y-1 pt-2 font-mono text-xs text-mute sm:col-start-2 md:col-start-3">
                   {s.features.map((f) => (
-                    <li key={f} className="flex gap-2">
-                      <span aria-hidden className="text-accent">+</span>
-                      {f}
-                    </li>
+                    <li key={f}>{f}</li>
                   ))}
                 </ul>
-              </TiltCard>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
-
-      <Reveal className="mt-12">
-        <ol className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs uppercase tracking-widest text-mute">
-          {process.map((p, i) => (
-            <li key={p} className="flex items-center gap-4">
-              <span className="text-bone">{p}</span>
-              {i < process.length - 1 && <span aria-hidden className="text-accent">→</span>}
+              </Reveal>
             </li>
           ))}
-        </ol>
-      </Reveal>
+        </ul>
+
+        <Reveal className="mt-14">
+          <ol className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {process.map((p, i) => (
+              <li key={p} className="border-t border-accent pt-3 font-mono text-xs uppercase tracking-widest">
+                <span className="text-amber">{String(i + 1).padStart(2, '0')}</span> {p}
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+      </div>
     </div>
   </section>
 );

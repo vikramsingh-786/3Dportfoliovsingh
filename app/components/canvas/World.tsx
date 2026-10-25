@@ -3,13 +3,13 @@
 import { Suspense, createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, MeshDistortMaterial, useGLTF } from '@react-three/drei';
+import { Float, MeshDistortMaterial, useTexture } from '@react-three/drei';
 import { updateStation, world } from '../../lib/scroll';
 
 const GAP = 30; // z distance between stations
 const PALETTES = {
-  dark: { bg: '#05070D', star: '#cfd8ff', accent: '#7CF5C8', amber: '#FFB86B', ice: '#8FB8FF', ambient: 0.5 },
-  light: { bg: '#F4F1E9', star: '#2a3350', accent: '#0A7A5A', amber: '#C26A00', ice: '#2456C8', ambient: 1.1 },
+  dark: { bg: '#05070D', star: '#cfd8ff', accent: '#C6FF3D', amber: '#FF6A3D', ice: '#8FB8FF', ambient: 0.5 },
+  light: { bg: '#F4F1E9', star: '#2a3350', accent: '#2F2BFF', amber: '#D9381E', ice: '#2456C8', ambient: 1.1 },
 };
 const PalCtx = createContext(PALETTES.dark);
 const usePal = () => useContext(PalCtx);
@@ -60,26 +60,28 @@ function Stars({ count }: { count: number }) {
   );
 }
 
-// Station 0 — the planet, auto-fitted so the model's original scale doesn't matter.
+// Station 0 — planet built from the textures already in /public/planets.
 function Planet({ reduced }: { reduced: boolean }) {
-  const gltf = useGLTF('/planets/scene.gltf');
-  const group = useRef<THREE.Group>(null);
-  const obj = useMemo(() => {
-    const scene = gltf.scene.clone(true);
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    const s = 7 / Math.max(size.x, size.y, size.z);
-    scene.position.sub(center);
-    const wrap = new THREE.Group();
-    wrap.add(scene);
-    wrap.scale.setScalar(s);
-    return wrap;
-  }, [gltf]);
-  useSpin(group, [0, 0.08], reduced);
+  const [surface, clouds] = useTexture(['/planets/textures/Planet_baseColor.png', '/planets/textures/Clouds_baseColor.png']);
+  const pal = usePal();
+  const planet = useRef<THREE.Mesh>(null);
+  const cloud = useRef<THREE.Mesh>(null);
+  useSpin(planet, [0, 0.06], reduced);
+  useSpin(cloud, [0, 0.09], reduced);
   return (
-    <group ref={group}>
-      <primitive object={obj} />
+    <group rotation={[0.35, 0, 0.2]}>
+      <mesh ref={planet}>
+        <sphereGeometry args={[3.4, 64, 64]} />
+        <meshStandardMaterial map={surface} roughness={0.9} />
+      </mesh>
+      <mesh ref={cloud}>
+        <sphereGeometry args={[3.48, 64, 64]} />
+        <meshStandardMaterial map={clouds} transparent opacity={0.55} depthWrite={false} />
+      </mesh>
+      <mesh scale={1.12}>
+        <sphereGeometry args={[3.4, 48, 48]} />
+        <meshBasicMaterial color={pal.accent} side={THREE.BackSide} transparent opacity={0.12} />
+      </mesh>
     </group>
   );
 }
@@ -104,8 +106,8 @@ function HeroStation({ reduced }: { reduced: boolean }) {
       <Suspense fallback={null}>
         <Planet reduced={reduced} />
       </Suspense>
-      <Ring radius={5.2} tilt={[1.25, 0.2, 0]} color={ACCENT} speed={0.15} reduced={reduced} />
-      <Ring radius={6.4} tilt={[1.0, -0.3, 0.4]} color={AMBER} speed={-0.1} reduced={reduced} />
+      <Ring radius={4.9} tilt={[1.25, 0.2, 0]} color={ACCENT} speed={0.15} reduced={reduced} />
+      <Ring radius={5.8} tilt={[1.0, -0.3, 0.4]} color={AMBER} speed={-0.1} reduced={reduced} />
     </group>
   );
 }
@@ -206,7 +208,7 @@ function Scene({ mobile, reduced, light }: Env) {
       <Stars count={mobile ? 600 : 1800} />
       {stations.map((Station, i) => (
         // Objects sit right of centre on desktop so text can live on the left; centred (and dimmed by scrims) on mobile.
-        <group key={i} position={[mobile ? 0 : (i % 2 ? -4.5 : 4.5), mobile ? 2 : 0, -i * GAP - 14]}>
+        <group key={i} position={[mobile ? 0 : (i % 2 ? -6.5 : 6.5), mobile ? 2 : 0, -i * GAP - 14]}>
           <Station reduced={reduced} />
         </group>
       ))}

@@ -6,7 +6,7 @@ import { profile, socials } from '../lib/data';
 import { Reveal, SectionHead } from './ui';
 
 const field =
-  'w-full rounded-lg border border-line bg-void/60 px-4 py-3 text-bone placeholder:text-mute/70 focus:border-accent focus-visible:outline-none focus:ring-1 focus:ring-accent';
+  'w-full border-0 border-b border-line bg-transparent py-3 text-lg text-bone placeholder:text-mute/60 transition-colors focus:border-accent';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -58,10 +58,13 @@ const Contact = () => {
       <div className="mx-auto w-full max-w-7xl">
         {/* Station object sits left, form hugs the right on desktop. */}
         <div className="lg:ml-auto lg:w-[55%]">
-          <SectionHead index="05" label="Contact" title="Let's build something." />
+          <SectionHead index="05" label="Contact" title="Let's build *something.*" />
 
           <Reveal>
-            <form onSubmit={onSubmit} className="panel space-y-5 p-6 sm:p-8">
+            <a href={`mailto:${profile.email}`} className="mb-12 block break-all text-3xl font-bold tracking-tight transition-colors hover:text-accent sm:text-5xl">
+              {profile.email}
+            </a>
+            <form onSubmit={onSubmit} className="space-y-8">
               <div>
                 <label htmlFor="name" className="mb-2 block font-mono text-xs uppercase tracking-widest text-mute">Name</label>
                 <input id="name" name="name" type="text" required autoComplete="name" value={form.name} onChange={onChange} placeholder="Your name" className={field} />
@@ -85,8 +88,7 @@ const Contact = () => {
             </form>
           </Reveal>
 
-          <Reveal delay={0.1} className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-mute">
-            <a href={`mailto:${profile.email}`} className="text-bone hover:text-accent">{profile.email}</a>
+          <Reveal delay={0.1} className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-6 font-mono text-xs uppercase tracking-widest text-mute">
             {socials.map((s) => (
               <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
                 {s.name}

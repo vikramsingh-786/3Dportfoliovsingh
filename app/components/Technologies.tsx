@@ -12,38 +12,40 @@ const Technologies = () => {
   const shown = tech.filter((t) => group === 'All' || t.group === group);
 
   return (
-    <section id="tech" data-station className="relative flex min-h-screen items-center px-6 py-24">
+    <section id="tech" data-station className="relative px-6 py-28">
       <div className="mx-auto w-full max-w-7xl">
-        <SectionHead index="03" label="Stack" title="Tools I reach for." />
+        <div className="lg:ml-auto lg:w-[60%]">
+          <SectionHead index="03" label="Stack" title="Tools I reach *for.*" />
 
-        <Reveal>
-          <div role="group" aria-label="Filter technologies" className="mb-8 flex flex-wrap gap-2">
-            {groups.map((g) => (
-              <button
-                key={g}
-                type="button"
-                aria-pressed={group === g}
-                onClick={() => setGroup(g)}
-                className={`rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
-                  group === g ? 'border-accent bg-accent text-void' : 'border-line text-mute hover:border-accent hover:text-accent'
-                }`}
-              >
-                {g}
-              </button>
+          <Reveal>
+            <div role="group" aria-label="Filter technologies" className="mb-10 flex flex-wrap gap-x-6 gap-y-2 border-b border-line">
+              {groups.map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  aria-pressed={group === g}
+                  onClick={() => setGroup(g)}
+                  className={`-mb-px border-b-2 pb-3 font-mono text-xs uppercase tracking-widest transition-colors ${
+                    group === g ? 'border-accent text-accent' : 'border-transparent text-mute hover:text-bone'
+                  }`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </Reveal>
+
+          <ul className="flex flex-wrap gap-3">
+            {shown.map((t) => (
+              <li key={t.name} className="flex items-center gap-3 rounded-full border border-line py-1.5 pl-1.5 pr-5 transition-colors hover:border-accent">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 p-1.5">
+                  <Image src={t.icon} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+                </span>
+                <span className="text-sm">{t.name}</span>
+              </li>
             ))}
-          </div>
-        </Reveal>
-
-        <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7">
-          {shown.map((t) => (
-            <li key={t.name} className="panel group flex flex-col items-center gap-3 p-4 transition-colors hover:border-accent">
-              <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/90 p-2">
-                <Image src={t.icon} alt="" width={40} height={40} className="h-10 w-10 object-contain transition-transform group-hover:scale-110" />
-              </span>
-              <span className="text-center text-xs text-mute group-hover:text-bone">{t.name}</span>
-            </li>
-          ))}
-        </ul>
+          </ul>
+        </div>
       </div>
     </section>
   );

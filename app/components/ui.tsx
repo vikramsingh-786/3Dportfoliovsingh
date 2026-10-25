@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 
 // Fade-up on scroll into view.
 export const Reveal = ({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) => (
@@ -15,14 +15,33 @@ export const Reveal = ({ children, delay = 0, className }: { children: React.Rea
   </motion.div>
 );
 
-export const SectionHead = ({ index, label, title, align = 'left' }: { index: string; label: string; title: string; align?: 'left' | 'right' }) => (
-  <Reveal className={`mb-12 ${align === 'right' ? 'lg:text-right' : ''}`}>
-    <p className="eyebrow">
-      {index} / {label}
+// `*word*` in the title renders as the accent serif italic.
+export const SectionHead = ({ index, label, title }: { index: string; label: string; title: string }) => (
+  <Reveal className="mb-14">
+    <p className="eyebrow flex items-center gap-4">
+      <span>{index}</span>
+      <span aria-hidden className="h-px w-12 bg-accent" />
+      <span>{label}</span>
     </p>
-    <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{title}</h2>
+    <h2 className="mt-5 text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+      {title.split('*').map((part, i) =>
+        i % 2 ? (
+          <em key={i} className="font-serif font-normal italic text-accent">
+            {part}
+          </em>
+        ) : (
+          part
+        )
+      )}
+    </h2>
   </Reveal>
 );
+
+// Thin accent bar showing page progress.
+export const ScrollProgress = () => {
+  const { scrollYProgress } = useScroll();
+  return <motion.div aria-hidden style={{ scaleX: scrollYProgress }} className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-accent" />;
+};
 
 // Pointer-driven 3D tilt; inert for reduced-motion users.
 export const TiltCard = ({ children, className }: { children: React.ReactNode; className?: string }) => {

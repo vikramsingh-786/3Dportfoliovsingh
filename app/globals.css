@@ -8,8 +8,8 @@
   --void: 5 7 13;
   --bone: 236 234 227;
   --mute: 139 146 165;
-  --accent: 124 245 200;
-  --amber: 255 184 107;
+  --accent: 198 255 61;
+  --amber: 255 106 61;
   --ice: 143 184 255;
 }
 
@@ -18,8 +18,8 @@
   --void: 244 241 233;
   --bone: 11 15 26;
   --mute: 88 96 116;
-  --accent: 10 122 90;
-  --amber: 168 92 0;
+  --accent: 47 43 255;
+  --amber: 217 56 30;
   --ice: 36 86 200;
 }
 
@@ -46,9 +46,6 @@ body {
 }
 
 @layer components {
-  .panel {
-    @apply rounded-2xl border border-line bg-void/70 backdrop-blur-md;
-  }
   .eyebrow {
     @apply font-mono text-xs uppercase tracking-[0.25em] text-accent;
   }
