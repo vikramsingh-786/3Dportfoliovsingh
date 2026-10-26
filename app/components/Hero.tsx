@@ -108,7 +108,8 @@ const Hero = () => {
         <Stage />
       </motion.div>
 
-      <div>
+      {/* Centred on phones/tablets, left-aligned beside the photo on desktop */}
+      <div className="text-center lg:text-left">
         <p className="enter panel inline-flex max-w-full items-center gap-2.5 rounded-full py-1.5 pl-3 pr-4 text-xs font-bold" style={d(0.05)}>
           <span aria-hidden className="live-dot h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.9)]" />
           <span className="truncate">
@@ -120,8 +121,9 @@ const Hero = () => {
         <h1 className="enter relative mt-6 whitespace-nowrap text-[clamp(2rem,9vw,4.25rem)] font-extrabold leading-[1] tracking-[-0.045em] lg:text-[clamp(3rem,5vw,4.5rem)]" style={d(0.15)}>
           <span className="text-grad">Vikram Singh</span>
           <span className="text-accent">.</span>
-          <span aria-hidden className="shimmer pointer-events-none absolute left-0 top-0" style={d(1)}>
-            Vikram Singh
+          {/* Light-sweep copy: same box + alignment as the name (invisible "." keeps the width equal) */}
+          <span aria-hidden className="shimmer pointer-events-none absolute inset-0" style={d(1)}>
+            Vikram Singh<span className="opacity-0">.</span>
           </span>
         </h1>
 
@@ -129,11 +131,11 @@ const Hero = () => {
           {profile.role}
         </p>
 
-        <p className="enter mt-4 max-w-xl text-lg leading-relaxed text-muted sm:text-xl" style={d(0.4)}>
+        <p className="enter mx-auto mt-4 max-w-xl text-lg leading-relaxed text-muted sm:text-xl lg:mx-0" style={d(0.4)}>
           {profile.intro}
         </p>
 
-        <div className="enter mt-9 flex flex-col gap-5 sm:flex-row" style={d(0.55)}>
+        <div className="enter mt-9 flex flex-col gap-5 sm:flex-row sm:justify-center lg:justify-start" style={d(0.55)}>
           <Magnetic>
             <a href="#portfolio" className="btn-key btn-shine w-full sm:w-auto">
               See the work ↓
@@ -146,7 +148,7 @@ const Hero = () => {
           </Magnetic>
         </div>
 
-        <ul className="enter mt-9 flex flex-wrap gap-x-6 gap-y-1" style={d(0.7)}>
+        <ul className="enter mt-9 flex flex-wrap justify-center gap-x-6 gap-y-1 lg:justify-start" style={d(0.7)}>
           {socials.map((s) => (
             <li key={s.name}>
               <a href={s.url} target="_blank" rel="noopener noreferrer" className="label inline-block py-2 transition-colors hover:text-accent">

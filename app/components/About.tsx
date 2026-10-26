@@ -190,7 +190,7 @@ const About = () => (
 
       <div className="mt-20">
         <Reveal>
-          <h3 className="label mb-8 lg:text-center">Journey</h3>
+          <h3 className="label mb-8 text-center">Journey</h3>
         </Reveal>
         <Journey />
       </div>
@@ -198,7 +198,7 @@ const About = () => (
       <div className="mt-20 grid gap-8 lg:grid-cols-2">
         <>
           <Reveal>
-            <h3 className="label mb-5">Skills</h3>
+            <h3 className="label mb-5 text-center lg:text-left">Skills</h3>
             <dl className="slab mb-[10px] space-y-5 rounded-2xl p-5 sm:p-6">
               {skillGroups.map((g) => (
                 <div key={g.name}>
@@ -216,7 +216,7 @@ const About = () => (
           </Reveal>
 
           <Reveal>
-            <h3 className="label mb-5">Achievements</h3>
+            <h3 className="label mb-5 text-center lg:text-left">Achievements</h3>
             <ul className="slab mb-[10px] space-y-3 rounded-2xl p-5 sm:p-6">
               {achievements.map((a) => (
                 <li key={a} className="flex gap-3 font-medium leading-relaxed">

@@ -59,7 +59,7 @@ export const SplitWords = ({ text, className = '' }: { text: string; className?:
 };
 
 export const SectionHeader = ({ index, label, title, intro }: { index: string; label: string; title: string; intro?: string }) => (
-  <div className="mb-12 max-w-3xl sm:mb-16">
+  <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16 lg:mx-0 lg:text-left">
     <Reveal>
       <p className="tag">
         {index} — {label}

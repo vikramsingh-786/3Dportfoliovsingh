@@ -61,11 +61,14 @@ html {
 }
 
 body {
+  /* No sideways scroll from decorative overflow. Body only (propagates to the viewport), so the
+     window stays the scroll container; `hidden` first for browsers without `clip`. */
+  overflow-x: hidden;
+  overflow-x: clip;
   background: rgb(var(--bg));
   color: rgb(var(--fg));
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
 }
 
 ::selection {

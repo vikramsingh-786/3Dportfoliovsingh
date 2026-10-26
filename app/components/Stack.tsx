@@ -23,7 +23,7 @@ const Stack = () => {
           <div
             role="group"
             aria-label="Filter technologies"
-            className="track no-scrollbar mb-10 flex w-fit max-w-full gap-1.5 overflow-x-auto rounded-full p-1.5"
+            className="track no-scrollbar mx-auto mb-10 flex w-fit max-w-full lg:mx-0 gap-1.5 overflow-x-auto rounded-full p-1.5"
           >
             {groups.map((g) => (
               <button

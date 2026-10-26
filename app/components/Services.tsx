@@ -6,7 +6,7 @@ import { process as steps, services } from '../lib/data';
 import Carousel from './Carousel';
 import { Reveal, SectionHeader } from './ui';
 
-const STEP_MS = 1800;
+const STEP_MS = 1000;
 
 /**
  * Process as a connected pipeline: numbered nodes on a track that fills as it auto-advances
@@ -43,8 +43,8 @@ function Process() {
       {/* Track: vertical on small screens (through node centres), horizontal from lg */}
       <span aria-hidden className="absolute bottom-[34px] left-[33px] top-[34px] w-0.5 rounded-full bg-line lg:bottom-auto lg:left-[12.5%] lg:right-[12.5%] lg:top-[27px] lg:h-0.5 lg:w-auto" />
       <span aria-hidden className="absolute bottom-[34px] left-[33px] top-[34px] w-0.5 lg:bottom-auto lg:left-[12.5%] lg:right-[12.5%] lg:top-[27px] lg:h-0.5 lg:w-auto">
-        <span className="block w-full rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.8)] transition-all duration-700 ease-out lg:hidden" style={{ height: pct }} />
-        <span className="hidden h-full rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.8)] transition-all duration-700 ease-out lg:block" style={{ width: pct }} />
+        <span className="block w-full rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.8)] transition-all duration-300 ease-out lg:hidden" style={{ height: pct }} />
+        <span className="hidden h-full rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.8)] transition-all duration-300 ease-out lg:block" style={{ width: pct }} />
       </span>
 
       {steps.map((p, i) => {
@@ -61,7 +61,7 @@ function Process() {
               className="group flex w-full items-center gap-5 rounded-2xl p-1.5 text-left lg:flex-col lg:gap-4 lg:p-0 lg:text-center"
             >
               <span
-                className={`relative z-10 flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold transition-all duration-500 ${
+                className={`relative z-10 flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold transition-all duration-300 ${
                   state === 'active'
                     ? 'scale-110 border-accent bg-accent text-[#01040d] shadow-[0_0_0_6px_rgb(74_222_128/0.18),0_0_24px_rgb(74_222_128/0.7)]'
                     : state === 'done'
@@ -115,7 +115,7 @@ const Services = () => (
       </Carousel>
 
       <Reveal className="mt-16">
-        <h3 className="label mb-5">Process</h3>
+        <h3 className="label mb-5 text-center lg:text-left">Process</h3>
         <Process />
       </Reveal>
     </div>
