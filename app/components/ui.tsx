@@ -259,3 +259,45 @@ export const BackToTop = () => {
     </AnimatePresence>
   );
 };
+
+const DownloadIcon = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+  </svg>
+);
+
+// Phones/tablets: "Download CV" bar pinned to the bottom once the hero is scrolled past
+// (desktop has it in the navbar). Leaves room on the right for the back-to-top key.
+export const StickyCV = ({ href }: { href: string }) => {
+  const { scrollY } = useScroll();
+  const reduced = useReducedMotion();
+  const [show, setShow] = useState(false);
+  useMotionValueEvent(scrollY, 'change', (v) => setShow(v > window.innerHeight * 0.8));
+
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className="fixed bottom-5 left-5 right-[5.75rem] z-50 sm:bottom-8 sm:left-8 sm:right-auto lg:hidden"
+          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduced ? { opacity: 0 } : { opacity: 0, y: 40 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 26 }}
+        >
+          <a href={href} download className="btn-key btn-shine w-full sm:w-auto">
+            <DownloadIcon />
+            Download CV
+          </a>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+// Compact navbar version (desktop).
+export const NavCV = ({ href }: { href: string }) => (
+  <a href={href} download className="btn-key hidden !min-h-11 !px-5 !text-xs lg:inline-flex">
+    <DownloadIcon />
+    Download CV
+  </a>
+);

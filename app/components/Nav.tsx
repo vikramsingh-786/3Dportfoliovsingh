@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { navLinks, profile } from '../lib/data';
+import { NavCV } from './ui';
 
 const ThemeToggle = () => {
   const [light, setLight] = useState(false);
@@ -78,6 +79,7 @@ const Nav = () => {
         </ul>
 
         <div className="flex items-center gap-3">
+          <NavCV href={profile.cv} />
           <ThemeToggle />
           <button
             type="button"

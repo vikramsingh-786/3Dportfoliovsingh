@@ -1,18 +1,28 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { profile, socials } from '../lib/data';
 import { Magnetic, Reveal, SectionHeader, Tilt } from './ui';
+
+// EmailJS ids (public by design: they're used from the browser).
+const EMAILJS = {
+  publicKey: 'mkrGLlFKQL_tLsUBs',
+  service: 'service_1hb6xn4',
+  toMe: 'template_oidiejn',
+  confirmation: 'template_vqzvk5u',
+};
+
+// EmailJS rejects with { status, text }; surface the text so failures are diagnosable.
+const reason = (err: unknown) => {
+  const text = (err as { text?: string } | null)?.text;
+  return text ? ` (${text})` : '';
+};
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
-
-  useEffect(() => {
-    emailjs.init('mkrGLlFKQL_tLsUBs');
-  }, []);
 
   const [copied, setCopied] = useState(false);
   const copyEmail = async () => {
@@ -31,34 +41,53 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     setStatus({ type: null, message: '' });
+
+    // 1) The message to me — this is the one that must succeed.
     try {
-      // Message to me
-      const toAdmin = await emailjs.send('service_1hb6xn4', 'template_oidiejn', {
-        from_name: form.name,
-        from_email: form.email,
-        to_name: profile.name,
-        to_email: profile.email,
-        message: form.message,
-        reply_to: form.email,
-      });
-      // Confirmation to the sender
-      const toUser = await emailjs.send('service_1hb6xn4', 'template_vqzvk5u', {
-        from_name: profile.name,
-        from_email: profile.email,
-        to_name: form.name,
-        to_email: form.email,
-        message: 'Thank you for contacting me! I will get back to you soon.',
-        reply_to: profile.email,
-      });
-      if (toAdmin.status !== 200 || toUser.status !== 200) throw new Error('Email not sent');
-      setStatus({ type: 'success', message: 'Message sent — a confirmation is on its way to your inbox.' });
-      setForm({ name: '', email: '', message: '' });
+      await emailjs.send(
+        EMAILJS.service,
+        EMAILJS.toMe,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          to_name: profile.name,
+          to_email: profile.email,
+          message: form.message,
+          reply_to: form.email,
+        },
+        EMAILJS.publicKey
+      );
     } catch (err) {
-      console.error('Email sending error:', err);
-      setStatus({ type: 'error', message: `Couldn't send that. Please try again or email ${profile.email} directly.` });
-    } finally {
+      console.error('EmailJS (message to me) failed:', err);
+      setStatus({ type: 'error', message: `Couldn't send that${reason(err)}. Please email ${profile.email} directly.` });
       setLoading(false);
+      return;
     }
+
+    // 2) Confirmation to the sender — nice to have; a failure here doesn't undo the message above.
+    let confirmed = true;
+    try {
+      await emailjs.send(
+        EMAILJS.service,
+        EMAILJS.confirmation,
+        {
+          from_name: profile.name,
+          from_email: profile.email,
+          to_name: form.name,
+          to_email: form.email,
+          message: 'Thank you for contacting me! I will get back to you soon.',
+          reply_to: profile.email,
+        },
+        EMAILJS.publicKey
+      );
+    } catch (err) {
+      confirmed = false;
+      console.warn('EmailJS (confirmation) failed:', err);
+    }
+
+    setStatus({ type: 'success', message: confirmed ? 'Message sent — a confirmation is on its way to your inbox.' : "Message sent — I'll get back to you soon." });
+    setForm({ name: '', email: '', message: '' });
+    setLoading(false);
   };
 
   return (
