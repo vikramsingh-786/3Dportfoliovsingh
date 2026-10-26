@@ -9,13 +9,13 @@ type Project = (typeof projects)[number];
 // One project card. `featured` puts image and text side by side on large screens.
 function Card({ p, i, featured = false }: { p: Project; i: number; featured?: boolean }) {
   return (
-    <article className={`slab group mb-[10px] flex h-full flex-col overflow-hidden rounded-3xl ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
+    <article className={`slab group mb-[10px] flex flex-col overflow-hidden rounded-3xl md:h-full ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
       <a
         href={p.demo}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${p.title} live demo (opens in new tab)`}
-        className={`relative block aspect-[16/10] overflow-hidden border-b border-line ${featured ? 'lg:aspect-auto lg:min-h-[24rem] lg:border-b-0 lg:border-r' : ''}`}
+        className={`relative block aspect-[16/10] w-full flex-none overflow-hidden border-b border-line ${featured ? 'lg:aspect-auto lg:min-h-[24rem] lg:border-b-0 lg:border-r' : ''}`}
       >
         <Image
           src={p.image}
@@ -66,7 +66,7 @@ const Work = () => {
         <ol className="grid gap-8 md:grid-cols-2">
           {rest.map((p, i) => (
             <li key={p.title}>
-              <Reveal delay={(i % 2) * 0.08} className="h-full">
+              <Reveal delay={(i % 2) * 0.08} className="md:h-full">
                 <Card p={p} i={i + 1} />
               </Reveal>
             </li>

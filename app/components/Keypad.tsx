@@ -130,7 +130,7 @@ export default function Keypad() {
 
   return (
     <div ref={wrap} aria-hidden className="pointer-events-none h-full w-full">
-      <Canvas frameloop={visible ? 'always' : 'never'} dpr={[1, 2]} camera={{ position: [0, 0, 9], fov: 35 }} gl={{ alpha: true, antialias: true }}>
+      <Canvas frameloop={visible ? 'always' : 'never'} dpr={[1, 2]} camera={{ position: [0, 0, 7], fov: 35 }} gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={look.light ? 0.9 : 0.45} />
         <directionalLight position={[4, 8, 6]} intensity={look.light ? 1.2 : 0.9} />
         <Studio />
