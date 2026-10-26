@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'framer-motion';
+import { AnimatePresence, motion, useInView, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from 'framer-motion';
 
 const OUT = [0.33, 1, 0.68, 1] as const;
 
@@ -190,4 +190,36 @@ export const SpotlightTracker = () => {
     return () => window.removeEventListener('pointermove', onMove);
   }, []);
   return null;
+};
+
+// Floating round "back to top" key: appears after the hero; its ring fills with page progress.
+export const BackToTop = () => {
+  const { scrollY, scrollYProgress } = useScroll();
+  const reduced = useReducedMotion();
+  const [show, setShow] = useState(false);
+  useMotionValueEvent(scrollY, 'change', (v) => setShow(v > window.innerHeight * 0.8));
+
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.a
+          href="#top"
+          aria-label="Back to top"
+          initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.6, y: 20 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+          className="key-cap key-cap-press fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full text-accent [--key-depth:5px] sm:bottom-8 sm:right-8"
+        >
+          <svg viewBox="0 0 56 56" aria-hidden className="absolute inset-0 h-full w-full -rotate-90">
+            <circle cx="28" cy="28" r="24" fill="none" stroke="rgb(var(--line))" strokeWidth="2.5" />
+            <motion.circle cx="28" cy="28" r="24" fill="none" stroke="rgb(var(--accent))" strokeWidth="2.5" strokeLinecap="round" style={{ pathLength: scrollYProgress }} />
+          </svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="relative">
+            <path d="M12 19V5M5 12l7-7 7 7" />
+          </svg>
+        </motion.a>
+      )}
+    </AnimatePresence>
+  );
 };

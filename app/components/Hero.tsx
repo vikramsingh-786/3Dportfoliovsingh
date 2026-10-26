@@ -1,20 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { experience, profile, socials, stats } from '../lib/data';
 import { Magnetic } from './ui';
 
-// WebGL only runs in the browser.
-const Keypad = dynamic(() => import('./Keypad'), { ssr: false });
-
 const d = (s: number) => ({ '--d': `${s}s` }) as React.CSSProperties;
 
-// Stat card stamped in under the stage after the portrait lands (never over the photo).
-const StatCard = ({ value, label, delay }: { value: string; label: string; delay: number }) => (
-  <div className="stamp-flat" style={d(delay)}>
+// Stat card stamped onto the stage after the portrait lands.
+const StatCard = ({ value, label, className, delay }: { value: string; label: string; className: string; delay: number }) => (
+  <div className={`stamp-flat absolute z-20 ${className}`} style={d(delay)}>
     <div className="slab rounded-2xl px-3.5 py-2.5 [--slab-depth:6px] sm:px-4 sm:py-3">
       <p className="font-mono text-lg font-medium leading-none text-accent [text-shadow:0_0_14px_rgb(74_222_128/0.5)] sm:text-2xl">{value}</p>
       <p className="mt-1 text-[9px] font-extrabold uppercase tracking-[0.14em] text-subtle sm:text-[10px]">{label}</p>
@@ -22,7 +18,7 @@ const StatCard = ({ value, label, delay }: { value: string; label: string; delay
   </div>
 );
 
-// The portrait: framed, beam-lit, tilts toward the pointer, stands on the 3D macropad.
+// The portrait: framed, beam-lit, tilts toward the pointer and floats.
 function Stage() {
   const reduced = useReducedMotion();
   const x = useMotionValue(0);
@@ -65,7 +61,7 @@ function Stage() {
                   className="object-cover"
                   style={{ objectPosition: '50% 38%' }}
                 />
-                {/* Bottom fade into the pedestal */}
+                {/* Bottom fade for the location label */}
                 <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/90 to-transparent" />
                 <p className="absolute inset-x-0 bottom-4 text-center text-[10px] font-extrabold uppercase tracking-[0.2em] text-fg/80">Bengaluru · India</p>
               </div>
@@ -73,6 +69,9 @@ function Stage() {
           </motion.div>
           </div>
         </div>
+
+        <StatCard value={stats[0].value} label={stats[0].label} className="-left-[22%] bottom-[30%] sm:-left-[18%]" delay={1.9} />
+        <StatCard value={stats[2].value} label={stats[2].label} className="-right-[20%] bottom-[10%] sm:-right-[16%]" delay={2.3} />
 
         {/* CodeChef stamp */}
         <div className="pointer-events-none absolute -right-[30%] -top-[5%] z-20 sm:-right-[26%] lg:-right-[24%]">
@@ -88,16 +87,7 @@ function Stage() {
 
       </div>
 
-      {/* 3D macropad pedestal, just under the frame so every key is visible */}
-      <div className="relative z-0 -mt-[3%] h-40 sm:h-48 lg:h-56">
-        <Keypad />
-      </div>
 
-      {/* Stats row under the pedestal */}
-      <div className="relative z-10 -mt-2 flex justify-center gap-3 sm:gap-4">
-        <StatCard value={stats[0].value} label={stats[0].label} delay={1.9} />
-        <StatCard value={stats[2].value} label={stats[2].label} delay={2.3} />
-      </div>
     </div>
   );
 }
