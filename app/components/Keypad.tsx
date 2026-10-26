@@ -19,6 +19,7 @@ function Pad({ light, reduced }: Look) {
   const keys = useRef<(THREE.Mesh | null)[]>([]);
   const press = useRef<number[]>(Array(COLS * ROWS).fill(0));
   const nextAt = useRef(0);
+  const hovered = useRef(new Set<number>());
 
   const capColor = light ? '#f4f4f8' : '#171c33';
   const baseColor = light ? '#d9d7e3' : '#070a16';
@@ -42,7 +43,7 @@ function Pad({ light, reduced }: Look) {
     }
     keys.current.forEach((m, i) => {
       if (!m) return;
-      press.current[i] = Math.max(0, press.current[i] - dt * 4.5);
+      press.current[i] = Math.max(hovered.current.has(i) ? 0.85 : 0, press.current[i] - dt * 4.5);
       m.position.y = 0.32 - press.current[i] * 0.2;
       const mat = m.material as THREE.MeshStandardMaterial;
       if (ACCENT_KEYS.has(i)) mat.emissiveIntensity = 0.6 + press.current[i] * 1.6;
@@ -50,7 +51,9 @@ function Pad({ light, reduced }: Look) {
     if (tilt.current) {
       const k = reduced ? 1000 : 3;
       tilt.current.rotation.x = THREE.MathUtils.damp(tilt.current.rotation.x, 0.62 + pointer.y * 0.18, k, dt);
-      tilt.current.rotation.y = THREE.MathUtils.damp(tilt.current.rotation.y, -0.55 + pointer.x * 0.3, k, dt);
+      // Pointer tilts it; scrolling past the hero turns it.
+      const spin = Math.min(window.scrollY / window.innerHeight, 1.5) * 0.9;
+      tilt.current.rotation.y = THREE.MathUtils.damp(tilt.current.rotation.y, -0.55 + pointer.x * 0.3 + spin, k, dt);
     }
   });
 
@@ -71,6 +74,20 @@ function Pad({ light, reduced }: Look) {
             radius={0.13}
             smoothness={4}
             position={[p[0], 0.32, p[2]]}
+            // Hover holds a key down, click/tap strikes it.
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              hovered.current.add(i);
+              document.body.style.cursor = 'pointer';
+            }}
+            onPointerOut={() => {
+              hovered.current.delete(i);
+              document.body.style.cursor = '';
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              press.current[i] = 1.3;
+            }}
           >
             {ACCENT_KEYS.has(i) ? (
               <meshStandardMaterial color="#22c55e" emissive="#4ade80" emissiveIntensity={0.6} roughness={0.35} />
@@ -129,7 +146,7 @@ export default function Keypad() {
   }, []);
 
   return (
-    <div ref={wrap} aria-hidden className="pointer-events-none h-full w-full">
+    <div ref={wrap} aria-hidden className="h-full w-full">
       <Canvas frameloop={visible ? 'always' : 'never'} dpr={[1, 2]} camera={{ position: [0, 0, 7], fov: 35 }} gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={look.light ? 0.9 : 0.45} />
         <directionalLight position={[4, 8, 6]} intensity={look.light ? 1.2 : 0.9} />

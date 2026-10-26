@@ -27,6 +27,7 @@
   --slab-b: #0a0e1d;
   --slab-c: #05070f;
   --slab-side: #04060f;
+  --track-shadow: inset 4px 4px 10px rgb(0 0 0 / 0.35), inset -3px -3px 8px rgb(255 255 255 / 0.04);
 }
 
 :root[data-theme='light'] {
@@ -51,6 +52,7 @@
   --slab-b: #f6f6fa;
   --slab-c: #eceaf2;
   --slab-side: #c9c6d6;
+  --track-shadow: inset 2px 2px 6px rgb(0 0 0 / 0.1), inset -2px -2px 6px rgb(255 255 255 / 0.9);
 }
 
 /* ───────── Base ───────── */
@@ -231,6 +233,36 @@ body {
   }
   .field:focus {
     border-color: rgb(var(--accent) / 0.7);
+    box-shadow:
+      inset 4px 4px 10px rgb(0 0 0 / 0.35),
+      0 0 0 4px rgb(var(--accent) / 0.15),
+      0 0 24px -4px rgb(var(--accent) / 0.45);
+  }
+
+  /* Recessed track (filter tabs) */
+  .track {
+    background: rgb(var(--bg) / 0.6);
+    box-shadow: var(--track-shadow);
+  }
+
+  /* Cursor-following glow (positions fed by SpotlightTracker). Sits under the card's content. */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(380px circle at var(--mx, -999px) var(--my, -999px), rgb(var(--accent) / 0.14), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .spotlight:hover::after {
+    opacity: 1;
   }
 }
 
@@ -448,16 +480,6 @@ body {
   }
 }
 
-/* Stock-ticker strip: the track holds the list twice and slides by half its width */
-.ticker-track {
-  animation: ticker 40s linear infinite;
-}
-@keyframes ticker {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* Live status dot */
 .live-dot {
   animation: live 1.6s ease-in-out infinite alternate;
@@ -513,7 +535,6 @@ body {
   .candle-live,
   .halo,
   .btn-shine::after,
-  .ticker-track,
   .beam::before {
     animation: none !important;
   }

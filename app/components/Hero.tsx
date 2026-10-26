@@ -2,8 +2,10 @@
 
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { experience, profile, socials, stats } from '../lib/data';
+import { Magnetic } from './ui';
 
 // WebGL only runs in the browser.
 const Keypad = dynamic(() => import('./Keypad'), { ssr: false });
@@ -96,12 +98,21 @@ function Stage() {
   );
 }
 
-const Hero = () => (
-  <section id="top" className="relative flex min-h-[100svh] flex-col pt-16 sm:pt-20">
+const Hero = () => {
+  const section = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  // As the hero scrolls away, the photo stage shrinks back and dims.
+  const { scrollYProgress } = useScroll({ target: section, offset: ['start start', 'end start'] });
+  const stageScale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
+  const stageOpacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.25]);
+  const stageY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+
+  return (
+  <section ref={section} id="top" className="relative flex min-h-[100svh] flex-col pt-16 sm:pt-20">
     <div className="shell grid flex-1 items-center gap-4 py-6 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-10">
-      <div className="order-first lg:order-last">
+      <motion.div className="order-first lg:order-last" style={reduced ? undefined : { scale: stageScale, opacity: stageOpacity, y: stageY }}>
         <Stage />
-      </div>
+      </motion.div>
 
       <div>
         <p className="enter panel inline-flex max-w-full items-center gap-2.5 rounded-full py-1.5 pl-3 pr-4 text-xs font-bold" style={d(0.05)}>
@@ -112,17 +123,11 @@ const Hero = () => (
         </p>
 
         {/* Headline + a one-time light sweep laid over a copy of it */}
-        <h1 className="enter relative mt-6 text-[clamp(3rem,10vw,7rem)] font-extrabold leading-[0.95] tracking-[-0.045em]" style={d(0.15)}>
-          <span className="text-grad">
-            Vikram
-            <br />
-            Singh
-          </span>
+        <h1 className="enter relative mt-6 whitespace-nowrap text-[clamp(2rem,9vw,4.25rem)] font-extrabold leading-[1] tracking-[-0.045em] lg:text-[clamp(3rem,5vw,4.5rem)]" style={d(0.15)}>
+          <span className="text-grad">Vikram Singh</span>
           <span className="text-accent">.</span>
           <span aria-hidden className="shimmer pointer-events-none absolute left-0 top-0" style={d(1)}>
-            Vikram
-            <br />
-            Singh
+            Vikram Singh
           </span>
         </h1>
 
@@ -135,12 +140,16 @@ const Hero = () => (
         </p>
 
         <div className="enter mt-9 flex flex-col gap-5 sm:flex-row" style={d(0.55)}>
-          <a href="#portfolio" className="btn-key btn-shine">
-            See the work ↓
-          </a>
-          <a href={profile.cv} download className="btn-cap">
-            Download CV
-          </a>
+          <Magnetic>
+            <a href="#portfolio" className="btn-key btn-shine w-full sm:w-auto">
+              See the work ↓
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a href={profile.cv} download className="btn-cap w-full sm:w-auto">
+              Download CV
+            </a>
+          </Magnetic>
         </div>
 
         <ul className="enter mt-9 flex flex-wrap gap-x-6 gap-y-1" style={d(0.7)}>
@@ -155,6 +164,7 @@ const Hero = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default Hero;

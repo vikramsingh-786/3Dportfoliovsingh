@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { profile, socials } from '../lib/data';
-import { Reveal, SectionHeader } from './ui';
+import { Magnetic, Reveal, SectionHeader } from './ui';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -94,9 +94,11 @@ const Contact = () => {
                 <textarea id="message" name="message" rows={5} required value={form.message} onChange={onChange} placeholder="Tell me about your project" className="field resize-none" />
               </div>
               <div className="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
-                <button type="submit" disabled={loading} className="btn-key w-full disabled:opacity-60 sm:w-auto">
-                  {loading ? 'Sending…' : 'Send message'}
-                </button>
+                <Magnetic className="w-full sm:w-auto">
+                  <button type="submit" disabled={loading} className="btn-key w-full disabled:opacity-60 sm:w-auto">
+                    {loading ? 'Sending…' : 'Send message'}
+                  </button>
+                </Magnetic>
                 <p role="status" aria-live="polite" className={`text-sm font-semibold ${status.type === 'error' ? 'text-red-400' : 'text-accent'}`}>
                   {status.message}
                 </p>

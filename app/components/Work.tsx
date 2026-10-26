@@ -3,27 +3,30 @@
 import Image from 'next/image';
 import { projects } from '../lib/data';
 import Carousel from './Carousel';
-import { Reveal, SectionHeader } from './ui';
+import { Magnetic, Reveal, SectionHeader } from './ui';
 
 type Project = (typeof projects)[number];
 
 // One project card. `featured` puts image and text side by side on large screens.
 function Card({ p, i, featured = false }: { p: Project; i: number; featured?: boolean }) {
   return (
-    <article className={`slab group mb-[10px] flex flex-col overflow-hidden rounded-3xl ${featured ? 'md:h-full' : 'h-full'} ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
+    <article className={`slab spotlight group mb-[10px] flex flex-col overflow-hidden rounded-3xl ${featured ? 'md:h-full' : 'h-full'} ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
       <a
         href={p.demo}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${p.title} live demo (opens in new tab)`}
-        className={`relative block aspect-[16/10] w-full flex-none overflow-hidden border-b border-line ${featured ? 'lg:aspect-auto lg:min-h-[24rem] lg:border-b-0 lg:border-r' : ''}`}
+        className={`relative block aspect-[16/9] w-full flex-none overflow-hidden border-b border-line bg-bg ${featured ? 'lg:aspect-auto lg:min-h-[24rem] lg:border-b-0 lg:border-r' : ''}`}
       >
+        {/* Screenshots vary from ~1.5:1 to ~2.2:1, so never crop: show the whole image (contain)
+            over a blurred, dimmed copy of itself that fills any leftover space. */}
+        <Image src={p.image} alt="" aria-hidden fill sizes="96px" className="scale-125 object-cover opacity-40 blur-2xl" />
         <Image
           src={p.image}
           alt={`${p.title} screenshot`}
           fill
           sizes={featured ? '(min-width:1024px) 55vw, 100vw' : '(min-width:768px) 50vw, 100vw'}
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          className="object-contain p-2 drop-shadow-[0_12px_24px_rgb(0_0_0/0.45)] transition-transform duration-700 group-hover:scale-[1.03] sm:p-3"
         />
       </a>
       <div className={`flex flex-1 flex-col p-6 sm:p-8 ${featured ? 'lg:justify-center lg:p-10' : ''}`}>
