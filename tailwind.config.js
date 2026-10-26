@@ -1,22 +1,25 @@
 // tailwind.config.js
+const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
-        void: 'rgb(var(--void) / <alpha-value>)',
-        bone: 'rgb(var(--bone) / <alpha-value>)',
-        head: 'rgb(var(--head) / <alpha-value>)',
-        mute: 'rgb(var(--mute) / <alpha-value>)',
-        accent: 'rgb(var(--accent) / <alpha-value>)',
-        amber: 'rgb(var(--amber) / <alpha-value>)',
-        ice: 'rgb(var(--ice) / <alpha-value>)',
-        line: 'rgb(var(--bone) / 0.12)',
+        bg: token('bg'),
+        surface: token('surface'),
+        ink: token('ink'),
+        muted: token('muted'),
+        accent: token('accent'),
+        line: 'rgb(var(--ink) / 0.1)',
       },
       fontFamily: {
-        display: ['var(--font-display)', 'Impact', 'sans-serif'],
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
-        mono: ['var(--font-body)', 'system-ui', 'sans-serif'], // legacy class name; maps to body font
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+      },
+      maxWidth: {
+        site: '88rem',
       },
     },
   },
