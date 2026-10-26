@@ -131,6 +131,22 @@ body {
       0 calc(var(--slab-depth) + 1rem) 2.5rem -0.5rem rgb(0 0 0 / 0.6);
   }
 
+  /* Static content: flat surface, hairline border, lit top edge. No depth = not pressable. */
+  .panel {
+    background: rgb(var(--surface) / 0.7);
+    border: 1px solid rgb(var(--line));
+    box-shadow: inset 0 1px 0 var(--cap-hi);
+  }
+
+  /* Inset readout (stats): recessed well, like an instrument display */
+  .well {
+    background: rgb(var(--bg) / 0.7);
+    border: 1px solid rgb(0 0 0 / 0.4);
+    box-shadow:
+      inset 5px 5px 11px rgb(0 0 0 / 0.45),
+      inset -4px -4px 10px rgb(255 255 255 / 0.04);
+  }
+
   /* Green 3D key button */
   .btn-key {
     --k: 6px;
@@ -161,8 +177,8 @@ body {
     --k: 1px;
     translate: 0 5px;
   }
-  /* One light streak sweeping across the button, on a loop */
-  .btn-key::after {
+  /* One light streak sweeping across the button, on a loop — hero CTA only */
+  .btn-shine::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -374,6 +390,26 @@ body {
   }
 }
 
+/* Stock-ticker strip: the track holds the list twice and slides by half its width */
+.ticker-track {
+  animation: ticker 40s linear infinite;
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Live status dot */
+.live-dot {
+  animation: live 1.6s ease-in-out infinite alternate;
+}
+@keyframes live {
+  to {
+    opacity: 0.35;
+  }
+}
+
 /* Process stepper fill */
 .step-fill {
   width: 0%;
@@ -407,6 +443,7 @@ body {
   .shimmer {
     display: none;
   }
+  .live-dot,
   .stamp,
   .stamp-impact,
   .odo-strip,
@@ -414,12 +451,13 @@ body {
   .chart-draw,
   .candle-live,
   .halo,
-  .btn-key::after,
+  .btn-shine::after,
+  .ticker-track,
   .beam::before {
     animation: none !important;
   }
   .stamp-impact,
-  .btn-key::after {
+  .btn-shine::after {
     display: none;
   }
   .beam::before {

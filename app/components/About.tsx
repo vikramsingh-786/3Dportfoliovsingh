@@ -22,7 +22,7 @@ const About = () => (
             about how a product feels as how it&apos;s built.
           </p>
           <div className="mt-8 flex items-center gap-4">
-            <span className="key-cap relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl [--key-depth:4px]">
+            <span className="panel relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl">
               <Image src="/hero.png" alt="Portrait of Vikram Singh" fill sizes="64px" className="object-cover object-top" />
             </span>
             <div>
@@ -34,8 +34,8 @@ const About = () => (
 
         <dl className="grid grid-cols-3 gap-3 sm:gap-4 lg:grid-cols-1">
           {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.08} className="key-cap mb-[7px] flex flex-col justify-center rounded-2xl px-3 py-5 sm:px-6">
-              <dd className="text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
+            <Reveal key={s.label} delay={i * 0.08} className="well flex flex-col justify-center rounded-2xl px-3 py-5 sm:px-6">
+              <dd className="font-mono text-3xl font-medium tracking-tight text-accent [text-shadow:0_0_18px_rgb(74_222_128/0.45)] sm:text-4xl">
                 <Odometer value={s.value} />
               </dd>
               <dt className="label mt-1">{s.label}</dt>
@@ -50,7 +50,7 @@ const About = () => (
           <ol className="space-y-5">
             {history.map((h) => (
               <li key={h.year + h.title} className={h.current ? 'beam rounded-2xl' : ''}>
-                <div className={`rounded-2xl p-5 sm:p-6 ${h.current ? 'bg-surface' : 'key-cap mb-[7px]'}`}>
+                <div className={`rounded-2xl p-5 sm:p-6 ${h.current ? 'bg-surface' : 'panel'}`}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="text-2xl font-extrabold tracking-tight text-accent">{h.year}</p>
                     {h.current && <span className="tag rounded-full border border-accent/40 px-2.5 py-0.5">Now</span>}
@@ -75,7 +75,7 @@ const About = () => (
                   <dt className="tag mb-2">{g.name}</dt>
                   <dd className="flex flex-wrap gap-2">
                     {g.items.map((i) => (
-                      <span key={i} className="key-cap rounded-lg px-2.5 py-1 text-xs font-bold [--key-depth:3px]">
+                      <span key={i} className="panel rounded-lg px-2.5 py-1 text-xs font-bold">
                         {i}
                       </span>
                     ))}

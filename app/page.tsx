@@ -4,6 +4,7 @@
 import Background from './components/Background';
 import Nav from './components/Nav';
 import Hero from './components/Hero';
+import Ticker from './components/Ticker';
 import About from './components/About';
 import Services from './components/Services';
 import Stack from './components/Stack';
@@ -23,6 +24,7 @@ export default function Home() {
       <Nav />
       <main className="relative">
         <Hero />
+        <Ticker />
         <About />
         <Services />
         <Stack />

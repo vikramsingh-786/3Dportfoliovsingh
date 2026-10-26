@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { profile, socials } from '../lib/data';
+import { experience, profile, socials } from '../lib/data';
 
 // WebGL only runs in the browser.
 const Keypad = dynamic(() => import('./Keypad'), { ssr: false });
@@ -28,7 +28,13 @@ const Hero = () => (
       </div>
 
       <div>
-        <p className="tag enter" style={d(0.1)}>
+        <p className="enter panel inline-flex max-w-full items-center gap-2.5 rounded-full py-1.5 pl-3 pr-4 text-xs font-bold" style={d(0.05)}>
+          <span aria-hidden className="live-dot h-2 w-2 shrink-0 rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.9)]" />
+          <span className="truncate">
+            <span className="text-accent">Now</span> · {experience[0].role}, {experience[0].org.split(' · ')[0]}
+          </span>
+        </p>
+        <p className="tag enter mt-5" style={d(0.1)}>
           Portfolio · {new Date().getFullYear()} · Bengaluru, India
         </p>
 
@@ -48,7 +54,7 @@ const Hero = () => (
         </h1>
 
         <div className="enter mt-7 flex items-center gap-4" style={d(0.35)}>
-          <span className="key-cap relative h-14 w-14 shrink-0 overflow-hidden rounded-full [--key-depth:4px]">
+          <span className="panel relative h-14 w-14 shrink-0 overflow-hidden rounded-full">
             <Image src="/hero.png" alt="Portrait of Vikram Singh" fill priority sizes="56px" className="object-cover object-top" />
           </span>
           <p className="text-base font-bold sm:text-lg">{profile.role}</p>
@@ -59,7 +65,7 @@ const Hero = () => (
         </p>
 
         <div className="enter mt-9 flex flex-col gap-5 sm:flex-row" style={d(0.6)}>
-          <a href="#portfolio" className="btn-key">
+          <a href="#portfolio" className="btn-key btn-shine">
             See the work ↓
           </a>
           <a href={profile.cv} download className="btn-cap">

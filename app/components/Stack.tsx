@@ -17,7 +17,7 @@ const Stack = () => {
         <SectionHeader index="03" label="Stack" title="Tools I reach for." />
 
         <Reveal>
-          {/* Inset track with key-cap tabs */}
+          {/* Inset track with filter tabs */}
           <div
             role="group"
             aria-label="Filter technologies"
@@ -40,9 +40,9 @@ const Stack = () => {
           </div>
         </Reveal>
 
-        <ul className="grid grid-cols-3 gap-x-3 gap-y-5 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7">
+        <ul className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7">
           {shown.map((t) => (
-            <li key={t.name} className="key-cap key-cap-press flex flex-col items-center gap-3 rounded-2xl px-2 py-5">
+            <li key={t.name} className="panel flex flex-col items-center gap-3 rounded-2xl px-2 py-5 transition-colors duration-300 hover:border-accent/50">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2">
                 <Image src={t.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
               </span>

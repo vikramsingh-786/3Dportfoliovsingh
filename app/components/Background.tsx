@@ -85,7 +85,7 @@ export default function Background() {
         className="halo absolute left-1/2 top-[38%] h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl lg:left-[70%] lg:top-[48%] lg:h-[44rem] lg:w-[44rem]"
         style={{ background: 'radial-gradient(closest-side, rgb(var(--glow-deep) / 0.6), transparent)' }}
       />
-      <Candles className="absolute inset-x-0 bottom-[8%] h-[34%] w-full text-fg opacity-30 lg:bottom-[4%] lg:left-auto lg:h-[50%] lg:w-[55%] lg:[mask-image:linear-gradient(to_right,transparent,#000_30%)]" />
+      <Candles className="absolute inset-x-0 top-[12%] h-[30%] w-full text-fg opacity-25 lg:top-auto lg:bottom-[4%] lg:opacity-30 lg:left-auto lg:h-[50%] lg:w-[55%] lg:[mask-image:linear-gradient(to_right,transparent,#000_30%)]" />
       <div ref={dim} className="absolute inset-0 bg-bg" style={{ opacity: 0, willChange: 'opacity' }} />
       <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
     </div>

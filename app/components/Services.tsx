@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
-import { process, services } from '../lib/data';
+import { process as steps, services } from '../lib/data';
 import { Reveal, SectionHeader } from './ui';
 
 const STEP_MS = 2600;
@@ -16,16 +16,16 @@ function Stepper() {
 
   useEffect(() => {
     if (!inView || reduced) return;
-    const t = window.setTimeout(() => setActive((a) => (a + 1) % process.length), STEP_MS);
+    const t = window.setTimeout(() => setActive((a) => (a + 1) % steps.length), STEP_MS);
     return () => window.clearTimeout(t);
   }, [active, inView, reduced]);
 
   return (
     <ol ref={ref} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {process.map((p, i) => {
+      {steps.map((p, i) => {
         const on = reduced || i === active;
         return (
-          <li key={p} className={`key-cap mb-[7px] rounded-2xl p-5 transition-colors ${on ? 'border-accent/50' : ''}`}>
+          <li key={p} className={`panel rounded-2xl p-5 transition-colors duration-300 ${on ? '!border-accent/60' : ''}`}>
             <span className={`font-mono text-xs font-bold ${on ? 'text-accent' : 'text-subtle'}`}>0{i + 1}</span>
             <p className="mt-6 text-lg font-extrabold">{p}</p>
             <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-line">
@@ -50,7 +50,7 @@ const Services = () => (
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s, i) => (
           <li key={s.title}>
-            <Reveal delay={(i % 3) * 0.06} className="key-cap key-cap-press group mb-[7px] h-full rounded-3xl p-6">
+            <Reveal delay={(i % 3) * 0.06} className="panel group h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
               <p className="font-mono text-xs font-bold text-accent">0{i + 1}</p>
               <h3 className="mt-4 text-xl font-extrabold tracking-tight">{s.title}</h3>
               <ul className="mt-4 space-y-2 text-sm text-muted">
