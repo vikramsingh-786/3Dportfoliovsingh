@@ -4,14 +4,14 @@
 
 :root {
   color-scheme: dark;
-  /* space-separated RGB so Tailwind can apply alpha. Dark = night blue + cream. */
-  --void: 11 23 48;
+  /* space-separated RGB so Tailwind can apply alpha. Dark = #0F1011 + cream, blue accent. */
+  --void: 15 16 17;
   --bone: 236 232 220;
   --head: 236 232 220;
-  --mute: 160 170 190;
-  --accent: 239 238 50;
-  --amber: 255 90 79;
-  --ice: 108 155 224;
+  --mute: 160 165 170;
+  --accent: 41 97 195;
+  --amber: 239 238 50;
+  --ice: 52 101 167;
 }
 
 /* Light = cream paper, black text, deep-blue headings, red accent. */
@@ -58,20 +58,26 @@ body {
     font-family: var(--font-display), Impact, sans-serif;
     font-weight: 400 !important;
     text-transform: uppercase;
-    letter-spacing: -0.01em;
-    line-height: 0.88;
+    letter-spacing: -0.02em;
+    line-height: 0.8;
     color: rgb(var(--head));
   }
 }
 
-/* Below lg, content spans the full width over the 3D scene: add a soft veil (not on the hero). */
+/* Below lg, content spans the full width over the 3D scene: solid colour block (no gradient), not on the hero. */
 @media (max-width: 1023px) {
   [data-station]:not(#top) > div {
-    background: linear-gradient(to bottom, rgb(var(--void) / 0), rgb(var(--void) / 0.82) 12%, rgb(var(--void) / 0.82) 88%, rgb(var(--void) / 0));
-    margin-inline: -1.5rem;
-    padding-inline: 1.5rem;
-    width: calc(100% + 3rem);
+    --g: 0.75rem;
+    background: rgb(var(--void) / 0.85);
+    margin-inline: calc(var(--g) * -1);
+    padding-inline: var(--g);
+    width: calc(100% + var(--g) * 2);
     max-width: none;
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  [data-station]:not(#top) > div {
+    --g: 1.5rem;
   }
 }
 
@@ -106,10 +112,10 @@ body {
     @apply text-xs font-semibold uppercase tracking-[0.2em] text-amber;
   }
   .btn {
-    @apply inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors;
+    @apply inline-flex items-center gap-2 rounded-none px-6 py-3 text-sm font-semibold uppercase tracking-widest transition-colors;
   }
   .btn-primary {
-    @apply btn bg-head text-void hover:bg-accent;
+    @apply btn bg-head text-void hover:bg-accent hover:text-bone;
   }
   .btn-ghost {
     @apply btn border border-line text-bone hover:border-accent hover:text-accent;

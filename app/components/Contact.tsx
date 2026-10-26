@@ -54,14 +54,14 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" data-station className="relative flex min-h-screen items-center px-6 py-24">
+    <section id="contact" data-station className="relative flex min-h-screen items-center px-3 sm:px-6 py-24">
       <div className="mx-auto w-full max-w-7xl">
         {/* Station object sits left, form hugs the right on desktop. */}
         <div className="lg:ml-auto lg:w-[55%]">
           <SectionHead index="05" label="Contact" title="Let's build *something.*" />
 
           <Reveal>
-            <a href={`mailto:${profile.email}`} className="mb-12 block break-all font-display text-4xl uppercase leading-none text-head transition-colors hover:text-accent sm:text-6xl lg:text-7xl">
+            <a href={`mailto:${profile.email}`} className="mb-12 block break-all font-display text-4xl uppercase leading-none text-accent transition-colors hover:text-head sm:text-6xl lg:text-7xl">
               {profile.email}
             </a>
             <form onSubmit={onSubmit} className="space-y-8">

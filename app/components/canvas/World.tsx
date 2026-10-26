@@ -8,7 +8,7 @@ import { updateStation, world } from '../../lib/scroll';
 
 const GAP = 30; // z distance between stations
 const PALETTES = {
-  dark: { bg: '#0B1730', star: '#ECE8DC', accent: '#EFEE32', amber: '#FF5A4F', ice: '#6C9BE0', ambient: 0.6 },
+  dark: { bg: '#0F1011', star: '#ECE8DC', accent: '#2961C3', amber: '#EFEE32', ice: '#3465A7', ambient: 0.7 },
   light: { bg: '#ECE8DC', star: '#17376F', accent: '#E4332A', amber: '#244A98', ice: '#E6C500', ambient: 1.1 },
 };
 const PalCtx = createContext(PALETTES.dark);

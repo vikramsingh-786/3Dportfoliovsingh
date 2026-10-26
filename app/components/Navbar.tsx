@@ -21,9 +21,11 @@ const ThemeToggle = () => {
       type="button"
       onClick={toggle}
       aria-label={light ? 'Switch to dark mode' : 'Switch to light mode'}
-      className="min-h-11 rounded-full border border-line px-4 py-2 text-xs font-semibold uppercase tracking-widest transition-colors hover:border-accent hover:text-accent"
+      className="flex h-11 w-11 items-center justify-center rounded-full bg-head text-void transition-opacity hover:opacity-80"
     >
-      {light ? 'Dark' : 'Light'}
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden>
+        {light ? <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /> : <circle cx="12" cy="12" r="5" />}
+      </svg>
     </button>
   );
 };
@@ -53,11 +55,20 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed inset-x-0 top-0 z-[70] transition-colors ${scrolled && !open ? 'bg-void/80 backdrop-blur-md' : ''}`}>
+      <header className={`fixed inset-x-0 top-0 z-[70] transition-colors ${scrolled && !open ? 'bg-void/80' : ''}`}>
         <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
           <a href="#top" onClick={() => setOpen(false)} className="font-display text-3xl uppercase leading-none text-head" aria-label={`${profile.name} — back to top`}>
             VS<span className="text-accent">.</span>
           </a>
+          <ul className="hidden items-center gap-8 md:flex">
+            {navLinks.map(({ id, title }) => (
+              <li key={id}>
+                <a href={`#${id}`} className="text-sm font-semibold uppercase tracking-widest transition-opacity hover:opacity-80">
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <button
@@ -65,7 +76,7 @@ const Navbar = () => {
               aria-expanded={open}
               aria-controls="chapters"
               onClick={() => setOpen((o) => !o)}
-              className="min-h-11 rounded-full bg-head px-5 py-2 text-xs font-semibold uppercase tracking-widest text-void transition-colors hover:bg-accent"
+              className="min-h-11 rounded-none bg-head px-5 py-2 text-xs font-semibold uppercase tracking-widest text-void transition-colors hover:bg-accent"
             >
               {open ? 'Close' : 'Menu'}
             </button>
@@ -80,7 +91,7 @@ const Navbar = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Chapters"
-            className="fixed inset-0 z-[65] overflow-y-auto bg-void px-6 pb-12 pt-28"
+            className="fixed inset-0 z-[65] overflow-y-auto bg-void px-3 sm:px-6 pb-12 pt-28"
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}

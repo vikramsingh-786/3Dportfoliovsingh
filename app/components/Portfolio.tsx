@@ -4,7 +4,7 @@ import { projects } from '../lib/data';
 import { ParallaxImage, Reveal, SectionHead } from './ui';
 
 const Portfolio = () => (
-  <section id="portfolio" data-station className="relative px-6 py-28">
+  <section id="portfolio" data-station className="relative px-3 sm:px-6 py-28">
     <div className="mx-auto w-full max-w-7xl">
       <div className="lg:w-[60%]">
         <SectionHead index="04" label="Work" title="Selected *projects.*" />
@@ -14,7 +14,7 @@ const Portfolio = () => (
             <li key={p.title} className="group border-t border-line py-10">
               <Reveal className="grid gap-6 md:grid-cols-[1.1fr_1fr]">
                 <a href={p.demo} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} live demo (opens in new tab)`} className="block">
-                  <ParallaxImage src={p.image} alt={`${p.title} screenshot`} sizes="(min-width:1024px) 28vw, 100vw" className="aspect-[16/10] rounded-xl border border-line" imgClassName="transition-transform duration-700 group-hover:scale-105" />
+                  <ParallaxImage src={p.image} alt={`${p.title} screenshot`} sizes="(min-width:1024px) 28vw, 100vw" className="aspect-[16/10] rounded-none border border-line" imgClassName="transition-transform duration-700 group-hover:scale-105" />
                 </a>
                 <div className="flex flex-col">
                   <p className="font-mono text-xs text-amber">{String(i + 1).padStart(2, '0')}</p>

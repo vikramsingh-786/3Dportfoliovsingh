@@ -37,7 +37,7 @@ const Preload = () => {
           role="dialog"
           aria-modal="true"
           aria-label="Welcome"
-          className="preload fixed inset-0 z-[90] flex flex-col items-center justify-between overflow-hidden bg-head px-6 py-10 text-void"
+          className="preload fixed inset-0 z-[90] flex flex-col items-center justify-between overflow-hidden bg-ice px-3 py-10 text-[#ECE8DC] sm:px-6"
           initial={false}
           exit={{ clipPath: 'inset(0 0 100% 0)' }}
           transition={{ duration: reduced ? 0 : 1, ease: EXPO }}
@@ -57,7 +57,7 @@ const Preload = () => {
             type="button"
             autoFocus
             onClick={enter}
-            className="rounded-full bg-void px-10 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-head transition-transform duration-200 hover:scale-105"
+            className="rounded-none bg-[#ECE8DC] px-10 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-[#17376F] transition-transform duration-200 hover:scale-105"
           >
             Enter
           </button>
