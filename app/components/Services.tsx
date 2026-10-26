@@ -64,10 +64,6 @@ const Services = () => (
           </Reveal>
         ))}
       </Carousel>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
 
       <Reveal className="mt-16">
         <h3 className="label mb-5">Process</h3>
