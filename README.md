@@ -1,7 +1,7 @@
 # Vikram Singh — 3D Portfolio
 
 3D portfolio built with Next.js 14, react-three-fiber, Tailwind and Framer Motion.
-Dark navy + green "tactile" design: 3D key-cap cards and buttons that press, a fixed grid/halo/candlestick backdrop, and a 3D macropad in the hero whose keys type by themselves.
+Dark navy + green "tactile" design: 3D key-cap cards and buttons that press, a fixed grid/halo backdrop with a pulsing contribution graph, and a 3D macropad in the hero whose keys type by themselves.
 
 ```bash
 npm install

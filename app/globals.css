@@ -431,40 +431,17 @@ body {
   }
 }
 
-/* Background chart */
-.candle-grow {
-  transform-box: fill-box;
-  transform-origin: center bottom;
-  animation: candle-grow 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+/* Background contribution graph: some cells pulse */
+.cell-pulse {
+  animation: cell-pulse 4.2s ease-in-out infinite;
 }
-@keyframes candle-grow {
-  from {
-    opacity: 0;
-    transform: scaleY(0);
-  }
-  to {
+@keyframes cell-pulse {
+  0%,
+  100% {
     opacity: 1;
-    transform: none;
   }
-}
-.chart-draw {
-  stroke-dasharray: 1;
-  animation: chart-draw 2s linear both;
-}
-@keyframes chart-draw {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.candle-live {
-  animation: candle-live 1.6s ease-in-out infinite alternate;
-}
-@keyframes candle-live {
-  to {
-    opacity: 0.45;
+  50% {
+    opacity: 0.35;
   }
 }
 
@@ -530,9 +507,7 @@ body {
   .stamp,
   .stamp-impact,
   .odo-strip,
-  .candle-grow,
-  .chart-draw,
-  .candle-live,
+  .cell-pulse,
   .halo,
   .btn-shine::after,
   .beam::before {

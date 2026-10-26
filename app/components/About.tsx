@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { achievements, education, experience, profile, skillGroups, stats } from '../lib/data';
 import { Odometer, Reveal, ScrollText, SectionHeader } from './ui';
 
@@ -26,65 +26,105 @@ function useDesktop() {
 }
 
 /**
- * The journey, oldest → now. A rail fills as you scroll and a glowing traveller rides its tip;
- * each milestone's node springs in and its card slides in from its side. Desktop zig-zags around a
- * centre rail with the year large on the open side; phones use a left rail.
+ * The journey, oldest → now. The rail runs from the first node to the last and fills as you scroll;
+ * a glowing traveller rides its tip. Each milestone stays dim until the line reaches its node, then
+ * the node lights up and its card + year pop in. Desktop zig-zags around a centre rail; phones use a
+ * left rail.
  */
 function Journey() {
-  const ref = useRef<HTMLOListElement>(null);
+  const list = useRef<HTMLOListElement>(null);
+  const nodes = useRef<(HTMLSpanElement | null)[]>([]);
   const reduced = useReducedMotion();
   const desk = useDesktop();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.75', 'end 0.55'] });
-  const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 24, restDelta: 0.001 });
-  const top = useTransform(fill, (v) => `${v * 100}%`);
   const steps = [...history].reverse();
-  const rail = 'absolute bottom-0 top-0 left-[11px] w-0.5 rounded-full lg:left-[calc(50%-1px)]';
+
+  // Node centres (px from the list top), measured so the rail starts/ends exactly on the nodes.
+  const [geo, setGeo] = useState({ start: 0, span: 1, at: steps.map(() => 0) });
+  useEffect(() => {
+    const el = list.current;
+    if (!el) return;
+    const measure = () => {
+      const top = el.getBoundingClientRect().top;
+      const c = nodes.current.map((n) => (n ? n.getBoundingClientRect().top - top + n.offsetHeight / 2 : 0));
+      const start = c[0] ?? 0;
+      const span = Math.max(1, (c[c.length - 1] ?? 1) - start);
+      setGeo({ start, span, at: c.map((y) => (y - start) / span) });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [desk]);
+
+  // Progress: 0 when the first node reaches ~70% down the viewport, 1 when the last node does.
+  const { scrollYProgress } = useScroll({ target: list, offset: ['start 0.7', 'end 0.7'] });
+  const fill = useSpring(scrollYProgress, { stiffness: 140, damping: 26, restDelta: 0.001 });
+  const travellerY = useTransform(fill, (v) => geo.start + Math.min(1, Math.max(0, v)) * geo.span);
+
+  // How many milestones the line has reached.
+  const [reached, setReached] = useState(0);
+  // Reduced motion (known only after mount): show everything, no scroll gating.
+  useEffect(() => {
+    if (reduced) setReached(steps.length);
+  }, [reduced, steps.length]);
+  useMotionValueEvent(fill, 'change', (v) => {
+    if (reduced) return;
+    const n = geo.at.filter((t) => v >= t - 0.02).length;
+    setReached((r) => (n > r ? n : r)); // once revealed, stay revealed
+  });
+
+  const railStyle = { top: geo.start, height: geo.span };
+  const railX = 'absolute left-[11px] w-0.5 rounded-full lg:left-[calc(50%-1px)]';
 
   return (
-    <ol ref={ref} className="relative space-y-10 lg:space-y-20">
-      <span aria-hidden className={`${rail} bg-line`} />
-      <motion.span aria-hidden className={`${rail} origin-top bg-accent shadow-[0_0_10px_rgb(74_222_128/0.8)]`} style={reduced ? undefined : { scaleY: fill }} />
+    <ol ref={list} className="relative space-y-10 lg:space-y-16">
+      <span aria-hidden className={`${railX} bg-line`} style={railStyle} />
+      <motion.span
+        aria-hidden
+        className={`${railX} origin-top bg-accent shadow-[0_0_10px_rgb(74_222_128/0.8)]`}
+        style={reduced ? railStyle : { ...railStyle, scaleY: fill }}
+      />
       {!reduced && (
         <motion.span
           aria-hidden
-          className="absolute left-[12px] z-10 -ml-2 -mt-2 h-4 w-4 rounded-full bg-accent shadow-[0_0_0_6px_rgb(74_222_128/0.2),0_0_18px_rgb(74_222_128/0.9)] lg:left-1/2"
-          style={{ top }}
+          className="absolute left-[12px] top-0 z-10 -ml-2 -mt-2 h-4 w-4 rounded-full bg-accent shadow-[0_0_0_6px_rgb(74_222_128/0.2),0_0_18px_rgb(74_222_128/0.9)] lg:left-1/2"
+          style={{ y: travellerY }}
         />
       )}
 
       {steps.map((h, i) => {
         const right = i % 2 === 1; // desktop: odd milestones sit right of the rail
+        const on = i < reached;
         return (
           <li key={h.year + h.title} className="relative pl-10 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:pl-0">
-            {/* Node on the rail */}
-            <motion.span
+            {/* Node on the rail: lights up when the line arrives */}
+            <span
+              ref={(n) => {
+                nodes.current[i] = n;
+              }}
               aria-hidden
-              className={`absolute left-[12px] top-7 -ml-[10px] h-5 w-5 rounded-full border-2 border-accent lg:left-1/2 lg:top-1/2 lg:-mt-[10px] ${h.current ? 'bg-accent shadow-[0_0_14px_rgb(74_222_128/0.9)]' : 'bg-bg'}`}
-              initial={reduced ? false : { scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true, margin: '0px 0px -25% 0px' }}
-              transition={{ type: 'spring', stiffness: 320, damping: 14 }}
+              className={`absolute left-[12px] top-7 z-[5] -ml-[10px] h-5 w-5 rounded-full border-2 transition-all duration-500 lg:left-1/2 lg:top-1/2 lg:-mt-[10px] ${
+                on ? 'scale-110 border-accent bg-accent shadow-[0_0_14px_rgb(74_222_128/0.9)]' : 'border-line bg-bg'
+              }`}
             />
 
             {/* Big year on the open side (desktop) */}
             <motion.p
               aria-hidden
               className={`hidden font-mono text-7xl font-medium tracking-tight text-accent/80 [text-shadow:0_0_28px_rgb(74_222_128/0.35)] lg:row-start-1 lg:block ${right ? 'lg:col-start-1 lg:text-right' : 'lg:col-start-2'}`}
-              initial={reduced ? false : { opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '0px 0px -20% 0px' }}
-              transition={{ duration: 0.7, delay: 0.15 }}
+              initial={false}
+              animate={on ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               {h.year}
             </motion.p>
 
-            {/* Milestone card */}
+            {/* Milestone card: pops in from its side when reached */}
             <motion.div
               className={`lg:row-start-1 ${right ? 'lg:col-start-2' : 'lg:col-start-1'}`}
-              initial={reduced ? false : { opacity: 0, x: desk ? (right ? 48 : -48) : 28 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '0px 0px -20% 0px' }}
-              transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
+              initial={false}
+              animate={on ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: desk ? (right ? 56 : -56) : 32, scale: 0.94 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             >
               <div className={h.current ? 'beam rounded-2xl' : ''}>
                 <div className={`rounded-2xl p-5 sm:p-6 ${h.current ? 'bg-surface' : 'panel'}`}>

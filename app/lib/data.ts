@@ -58,8 +58,11 @@ export const achievements = [
 export const skillGroups = [
   { name: 'Languages', items: ['C/C++', 'Go', 'JavaScript', 'TypeScript', 'Python', 'Java', 'SQL'] },
   { name: 'Frameworks', items: ['Node.js', 'Express', 'FastAPI', 'React', 'Next.js', 'Redux'] },
+  { name: 'AI & LLMs', items: ['Gemini API', 'OpenAI API', 'Prompt engineering', 'RAG', 'AI agents', 'Vector search'] },
+  { name: 'AI-assisted dev', items: ['Claude Code', 'Cursor', 'GitHub Copilot'] },
   { name: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'] },
   { name: 'DevOps', items: ['Docker', 'CI/CD'] },
+  { name: 'Planning', items: ['System design', 'Technical specs', 'Agile delivery'] },
 ];
 
 export const services = [
@@ -84,12 +87,12 @@ export const services = [
     features: ['Schema architecture', 'Query optimisation', 'Data migration', 'SQL & NoSQL'],
   },
   {
-    title: 'Analytics & SEO',
-    features: ['Performance tracking', 'SEO optimisation', 'Data visualisation', 'Conversion analysis'],
+    title: 'AI-powered products',
+    features: ['LLM integrations', 'RAG & chat interfaces', 'AI agents & automation', 'Prompt design & evals'],
   },
 ];
 
-export const process = ['Discovery', 'Planning', 'Development', 'Delivery'];
+export const process = ['Discovery', 'Planning & specs', 'AI-assisted build', 'Ship & iterate'];
 
 export const tech = [
   { name: 'HTML5', icon: '/html.png', group: 'Frontend' },

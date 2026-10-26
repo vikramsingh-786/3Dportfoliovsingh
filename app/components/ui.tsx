@@ -31,8 +31,8 @@ export const Reveal = ({ children, delay = 0, className }: { children: React.Rea
   </motion.div>
 );
 
-// Words rise out of a blur, one after another. Each word carries the gradient itself:
-// background-clip text on a parent doesn't survive transformed children.
+// Words rise out of a blur, one after another. Each word box gets bottom padding (cancelled by a
+// negative margin) so descenders (g, y, p) are never clipped.
 export const SplitWords = ({ text, className = '' }: { text: string; className?: string }) => {
   const reduced = useReducedMotion();
   const words = text.split(' ');
@@ -43,7 +43,7 @@ export const SplitWords = ({ text, className = '' }: { text: string; className?:
         {words.map((w, i) => (
           <motion.span
             key={i}
-            className={`inline-block ${className}`}
+            className={`-mb-[0.15em] inline-block pb-[0.15em] ${className}`}
             initial={reduced ? false : { opacity: 0, y: '0.5em', filter: 'blur(10px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true, margin: '0px 0px -10% 0px' }}
@@ -66,7 +66,7 @@ export const SectionHeader = ({ index, label, title, intro }: { index: string; l
       </p>
     </Reveal>
     <h2 className="mt-4 text-[clamp(2.25rem,6vw,4.25rem)] font-extrabold leading-[1.02] tracking-[-0.035em]">
-      <SplitWords text={title} className="text-grad" />
+      <SplitWords text={title} />
     </h2>
     {intro && (
       <Reveal delay={0.2}>

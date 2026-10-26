@@ -6,7 +6,7 @@ import { process as steps, services } from '../lib/data';
 import Carousel from './Carousel';
 import { Reveal, SectionHeader } from './ui';
 
-const STEP_MS = 2600;
+const STEP_MS = 4500;
 
 /**
  * Process as a connected pipeline: numbered nodes on a track that fills as it auto-advances
@@ -18,18 +18,28 @@ function Process() {
   const inView = useInView(ref, { margin: '0px 0px -15% 0px' });
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [cycle, setCycle] = useState(0); // bumps on resume so the timer bar restarts in sync
   const last = steps.length - 1;
   const current = reduced ? last : active;
   const pct = `${(current / last) * 100}%`;
 
   useEffect(() => {
-    if (!inView || reduced) return;
+    if (!inView || reduced || paused) return;
     const t = window.setTimeout(() => setActive((a) => (a + 1) % steps.length), STEP_MS);
     return () => window.clearTimeout(t);
-  }, [active, inView, reduced]);
+  }, [active, inView, reduced, paused, cycle]);
 
   return (
-    <ol ref={ref} className="relative grid gap-3 lg:grid-cols-4 lg:gap-0">
+    <ol
+      ref={ref}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => {
+        setPaused(false);
+        setCycle((c) => c + 1);
+      }}
+      className="relative grid gap-3 lg:grid-cols-4 lg:gap-0"
+    >
       {/* Track: vertical on small screens (through node centres), horizontal from lg */}
       <span aria-hidden className="absolute bottom-[34px] left-[33px] top-[34px] w-0.5 rounded-full bg-line lg:bottom-auto lg:left-[12.5%] lg:right-[12.5%] lg:top-[27px] lg:h-0.5 lg:w-auto" />
       <span aria-hidden className="absolute bottom-[34px] left-[33px] top-[34px] w-0.5 lg:bottom-auto lg:left-[12.5%] lg:right-[12.5%] lg:top-[27px] lg:h-0.5 lg:w-auto">
@@ -43,7 +53,10 @@ function Process() {
           <li key={p} className="relative">
             <button
               type="button"
-              onClick={() => setActive(i)}
+              onClick={() => {
+                setActive(i);
+                setCycle((c) => c + 1);
+              }}
               aria-current={state === 'active' ? 'step' : undefined}
               className="group flex w-full items-center gap-5 rounded-2xl p-1.5 text-left lg:flex-col lg:gap-4 lg:p-0 lg:text-center"
             >
@@ -65,7 +78,7 @@ function Process() {
                 {/* Per-step timer under the active step */}
                 <span className="mt-3 block h-1 w-full max-w-[9rem] overflow-hidden rounded-full bg-line">
                   {state === 'active' && !reduced ? (
-                    <span key={`a${active}`} className="step-fill block h-full rounded-full bg-accent" style={{ animationDuration: `${STEP_MS}ms` }} />
+                    <span key={`a${active}-${cycle}`} className="step-fill block h-full rounded-full bg-accent" style={{ animationDuration: `${STEP_MS}ms`, animationPlayState: paused ? 'paused' : 'running' }} />
                   ) : (
                     <span className={`block h-full rounded-full bg-accent ${state === 'next' ? 'w-0' : 'w-full'}`} />
                   )}

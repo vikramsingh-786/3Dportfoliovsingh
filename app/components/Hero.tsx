@@ -12,9 +12,9 @@ const Keypad = dynamic(() => import('./Keypad'), { ssr: false });
 
 const d = (s: number) => ({ '--d': `${s}s` }) as React.CSSProperties;
 
-// Stat card stamped onto the stage after the portrait lands.
-const StatCard = ({ value, label, className, delay }: { value: string; label: string; className: string; delay: number }) => (
-  <div className={`stamp-flat absolute z-20 ${className}`} style={d(delay)}>
+// Stat card stamped in under the stage after the portrait lands (never over the photo).
+const StatCard = ({ value, label, delay }: { value: string; label: string; delay: number }) => (
+  <div className="stamp-flat" style={d(delay)}>
     <div className="slab rounded-2xl px-3.5 py-2.5 [--slab-depth:6px] sm:px-4 sm:py-3">
       <p className="font-mono text-lg font-medium leading-none text-accent [text-shadow:0_0_14px_rgb(74_222_128/0.5)] sm:text-2xl">{value}</p>
       <p className="mt-1 text-[9px] font-extrabold uppercase tracking-[0.14em] text-subtle sm:text-[10px]">{label}</p>
@@ -45,7 +45,7 @@ function Stage() {
       }}
     >
       {/* Portrait frame */}
-      <div className="relative z-10 mx-auto aspect-[4/5] w-[68%] lg:h-[min(31rem,60svh)] lg:w-auto">
+      <div className="relative z-10 mx-auto aspect-[4/5] w-[62%] lg:h-[min(28rem,52svh)] lg:w-auto">
         <div
           aria-hidden
           className="glow-in absolute -inset-x-[30%] -inset-y-[12%] -z-10 rounded-full blur-2xl"
@@ -75,7 +75,7 @@ function Stage() {
         </div>
 
         {/* CodeChef stamp */}
-        <div className="pointer-events-none absolute -right-[16%] top-[4%] z-20 sm:-right-[12%]">
+        <div className="pointer-events-none absolute -right-[30%] -top-[5%] z-20 sm:-right-[26%] lg:-right-[24%]">
           <span aria-hidden className="stamp-impact absolute inset-[-12%] rounded-2xl border-2 border-accent/70" style={d(1.3)} />
           <div
             className="stamp flex flex-col items-center rounded-2xl border-[3px] border-accent bg-bg/70 px-3.5 py-2 text-accent backdrop-blur-sm"
@@ -86,13 +86,17 @@ function Stage() {
           </div>
         </div>
 
-        <StatCard value={stats[0].value} label={stats[0].label} className="-left-[22%] bottom-[30%] sm:-left-[18%]" delay={1.9} />
-        <StatCard value={stats[2].value} label={stats[2].label} className="-right-[20%] bottom-[10%] sm:-right-[16%]" delay={2.3} />
       </div>
 
-      {/* 3D macropad pedestal: the frame's bottom stands on it */}
-      <div className="relative z-0 -mt-[16%] h-36 sm:h-44 lg:h-52">
+      {/* 3D macropad pedestal, just under the frame so every key is visible */}
+      <div className="relative z-0 -mt-[3%] h-40 sm:h-48 lg:h-56">
         <Keypad />
+      </div>
+
+      {/* Stats row under the pedestal */}
+      <div className="relative z-10 -mt-2 flex justify-center gap-3 sm:gap-4">
+        <StatCard value={stats[0].value} label={stats[0].label} delay={1.9} />
+        <StatCard value={stats[2].value} label={stats[2].label} delay={2.3} />
       </div>
     </div>
   );

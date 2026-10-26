@@ -14,6 +14,17 @@ const Contact = () => {
     emailjs.init('mkrGLlFKQL_tLsUBs');
   }, []);
 
+  const [copied, setCopied] = useState(false);
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${profile.email}`;
+    }
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -55,26 +66,46 @@ const Contact = () => {
       <div className="shell">
         <SectionHeader index="05" label="Contact" title="Let's build something." />
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.3fr]">
-          <Reveal>
-            <a href={`mailto:${profile.email}`} className="group inline-flex max-w-full items-center gap-3 text-2xl font-extrabold tracking-tight sm:text-3xl">
+        <div className="grid items-stretch gap-8 lg:grid-cols-[1fr_1.3fr]">
+          {/* Direct-contact panel: same height as the form so the two columns balance */}
+          <Reveal className="slab mb-[10px] flex flex-col rounded-3xl p-6 sm:p-8">
+            <p className="label">Reach me directly</p>
+            <a href={`mailto:${profile.email}`} className="group mt-4 inline-flex max-w-full items-center gap-3 text-xl font-extrabold tracking-tight sm:text-2xl">
               <span className="break-all underline decoration-accent/40 decoration-2 underline-offset-8 transition-colors group-hover:decoration-accent">{profile.email}</span>
               <span aria-hidden className="text-accent transition-transform group-hover:translate-x-1">→</span>
             </a>
-            <ul className="mt-10 flex flex-wrap gap-4">
+            <button type="button" onClick={copyEmail} className="btn-cap mt-6 self-start !min-h-10 !px-5 !text-xs">
+              {copied ? 'Copied ✓' : 'Copy email'}
+            </button>
+
+            <div className="my-8 h-px bg-line" />
+
+            <p className="label">Elsewhere</p>
+            <ul className="mt-4 grid grid-cols-2 gap-3">
               {socials.map((s) => (
                 <li key={s.name}>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="key-cap key-cap-press inline-flex min-h-11 items-center rounded-full px-5 text-xs font-extrabold uppercase tracking-[0.1em] [--key-depth:4px]">
-                    {s.name} ↗
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="key-cap key-cap-press flex min-h-12 items-center justify-between rounded-2xl px-4 text-xs font-extrabold uppercase tracking-[0.1em] [--key-depth:4px]"
+                  >
+                    {s.name}
+                    <span aria-hidden className="text-accent">↗</span>
                   </a>
                 </li>
               ))}
             </ul>
+
+            <p className="mt-auto flex items-center gap-2 pt-8 text-sm font-semibold text-subtle">
+              <span aria-hidden className="live-dot h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.9)]" />
+              Bengaluru, India
+            </p>
           </Reveal>
 
           {/* Form panel with the running light beam around its edge */}
-          <Reveal delay={0.1} className="beam rounded-3xl">
-            <form onSubmit={onSubmit} className="grid gap-5 rounded-3xl bg-surface p-6 sm:grid-cols-2 sm:p-8">
+          <Reveal delay={0.1} className="beam mb-[10px] rounded-3xl">
+            <form onSubmit={onSubmit} className="grid h-full gap-5 rounded-3xl bg-surface p-6 sm:grid-cols-2 sm:p-8">
               <div>
                 <label htmlFor="name" className="label mb-2 block">
                   Name
