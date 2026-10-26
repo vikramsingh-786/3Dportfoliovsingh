@@ -6,7 +6,7 @@ import { process as steps, services } from '../lib/data';
 import Carousel from './Carousel';
 import { Reveal, SectionHeader } from './ui';
 
-const STEP_MS = 4500;
+const STEP_MS = 1800;
 
 /**
  * Process as a connected pipeline: numbered nodes on a track that fills as it auto-advances
