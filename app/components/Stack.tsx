@@ -53,7 +53,7 @@ const Stack = () => {
               exit={reduced ? undefined : { opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.35, delay: reduced ? 0 : Math.min(i, 14) * 0.015, ease: [0.33, 1, 0.68, 1] }}
             >
-              <Tilt max={16} className="panel spotlight group flex h-full flex-col items-center gap-3 rounded-2xl px-2 py-5 transition-colors duration-300 hover:border-accent/50">
+              <Tilt max={16} className="slab spotlight group mb-[6px] flex h-full flex-col items-center gap-3 rounded-2xl px-2 py-5 transition-colors duration-300 [--slab-depth:6px] hover:border-accent/50">
               <span className="pop flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2">
                 <Image src={t.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
               </span>

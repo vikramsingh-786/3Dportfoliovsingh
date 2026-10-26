@@ -126,8 +126,11 @@ function Journey() {
               animate={on ? { opacity: 1, x: 0, y: 0, scale: 1 } : desk ? { opacity: 0, x: right ? 40 : -40, y: 0, scale: 0.94 } : { opacity: 0, x: 0, y: 28, scale: 0.94 }}
               transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             >
-              <Tilt max={6} className={h.current ? 'beam rounded-2xl' : 'rounded-2xl'}>
-                <div className={`rounded-2xl p-5 sm:p-6 ${h.current ? 'bg-surface' : 'panel'}`}>
+              <Tilt
+                max={6}
+                className={`mb-[10px] rounded-2xl ${h.current ? 'beam shadow-[0_10px_0_var(--slab-side),0_26px_40px_-10px_rgb(0_0_0/0.55)]' : ''}`}
+              >
+                <div className={`rounded-2xl p-5 sm:p-6 ${h.current ? 'bg-surface' : 'slab'}`}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="font-mono text-xs font-bold text-subtle">
                       {String(i + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}
@@ -199,7 +202,7 @@ const About = () => (
         <Journey />
       </div>
 
-      <div className="mt-20 grid gap-8 lg:grid-cols-2">
+      <div className="mt-20 grid gap-8 lg:grid-cols-2 lg:items-center">
         <>
           <Reveal>
             <h3 className="label mb-5 text-center lg:text-left">Skills</h3>
@@ -210,7 +213,7 @@ const About = () => (
                   <dt className="tag mb-2">{g.name}</dt>
                   <dd className="flex flex-wrap gap-2">
                     {g.items.map((i) => (
-                      <span key={i} className="panel rounded-lg px-2.5 py-1 text-xs font-bold">
+                      <span key={i} className="key-cap rounded-lg px-2.5 py-1 text-xs font-bold [--key-depth:3px]">
                         {i}
                       </span>
                     ))}

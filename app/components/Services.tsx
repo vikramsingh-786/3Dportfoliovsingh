@@ -61,12 +61,12 @@ function Process() {
               className="group flex w-full items-center gap-5 rounded-2xl p-1.5 text-left lg:flex-col lg:gap-4 lg:p-0 lg:text-center"
             >
               <span
-                className={`relative z-10 flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold transition-all duration-300 ${
+                className={`relative z-10 flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-full font-mono text-sm font-bold transition-all duration-300 ${
                   state === 'active'
-                    ? 'scale-110 border-accent bg-accent text-[#01040d] shadow-[0_0_0_6px_rgb(74_222_128/0.18),0_0_24px_rgb(74_222_128/0.7)]'
+                    ? 'cap-green -translate-y-1 scale-110'
                     : state === 'done'
-                      ? 'border-accent bg-bg text-accent'
-                      : 'border-line bg-bg text-subtle group-hover:border-accent/60'
+                      ? 'key-cap text-accent [--key-depth:5px]'
+                      : 'key-cap text-subtle [--key-depth:5px] group-hover:text-fg'
                 }`}
               >
                 {state === 'done' ? '✓' : `0${i + 1}`}
@@ -97,10 +97,13 @@ const Services = () => (
     <div className="shell">
       <SectionHeader index="02" label="Services" title="What I can build for you." />
 
-      <Carousel label="Services" gridClass="md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3">
+      <Carousel label="Services" gridClass="md:grid md:grid-cols-2 md:gap-10 lg:grid-cols-3">
         {services.map((s, i) => (
-          <Reveal key={s.title} delay={(i % 3) * 0.06} className="h-full">
-          <Tilt className="panel spotlight group h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
+          <Reveal key={s.title} delay={(i % 3) * 0.06} className="relative h-full">
+          {/* Circuit wires to the neighbouring cards (grid only, not the phone carousel) */}
+          <span aria-hidden className={`wire wire-h left-full top-1/2 hidden w-10 ${i % 2 === 0 ? 'md:block' : 'md:hidden'} ${i % 3 !== 2 ? 'lg:block' : 'lg:hidden'}`} />
+          <span aria-hidden className={`wire wire-v left-1/2 top-full hidden h-10 ${i < services.length - 2 ? 'md:block' : 'md:hidden'} ${i < 3 ? 'lg:block' : 'lg:hidden'}`} />
+          <Tilt className="slab spotlight group mb-[10px] h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
             <p className="pop font-mono text-xs font-bold text-accent">0{i + 1}</p>
             <h3 className="pop mt-4 text-xl font-extrabold tracking-tight">{s.title}</h3>
             <ul className="pop-sm mt-4 space-y-2 text-sm text-muted">

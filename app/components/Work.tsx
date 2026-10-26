@@ -69,7 +69,7 @@ const Work = () => {
           <Card p={lead} i={0} featured />
         </Reveal>
 
-        <Carousel label="More projects" gridClass="md:grid md:grid-cols-2 md:gap-8" interval={4500}>
+        <Carousel label="More projects" gridClass="md:grid md:grid-cols-2 md:gap-8" interval={3000}>
           {rest.map((p, i) => (
             <Reveal key={p.title} delay={(i % 2) * 0.08} className="h-full">
               <Card p={p} i={i + 1} />
