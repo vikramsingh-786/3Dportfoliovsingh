@@ -11,8 +11,7 @@ import Stack from './components/Stack';
 import Work from './components/Work';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import { BackToTop, ScrollProgress, SpotlightTracker, StickyCV } from './components/ui';
-import { profile } from './lib/data';
+import { BackToTop, ScrollProgress, SpotlightTracker } from './components/ui';
 
 export default function Home() {
   return (
@@ -36,7 +35,6 @@ export default function Home() {
       </main>
       <Footer />
       </div>
-      <StickyCV href={profile.cv} />
       <BackToTop />
     </>
   );
