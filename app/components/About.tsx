@@ -123,7 +123,7 @@ function Journey() {
             <motion.div
               className={`lg:row-start-1 ${right ? 'lg:col-start-2' : 'lg:col-start-1'}`}
               initial={false}
-              animate={on ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: desk ? (right ? 56 : -56) : 32, scale: 0.94 }}
+              animate={on ? { opacity: 1, x: 0, y: 0, scale: 1 } : desk ? { opacity: 0, x: right ? 40 : -40, y: 0, scale: 0.94 } : { opacity: 0, x: 0, y: 28, scale: 0.94 }}
               transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             >
               <Tilt max={6} className={h.current ? 'beam rounded-2xl' : 'rounded-2xl'}>

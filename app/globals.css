@@ -278,6 +278,13 @@ body {
   }
 }
 
+/* Page wrapper: clips anything poking out sideways (tilted/scaled cards, entrance offsets).
+   Mobile browsers ignore overflow on <body> for touch panning, so clip here too. */
+.clip-x {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 /* Horizontal scrollers: keep swipe, hide the bar */
 .no-scrollbar {
   scrollbar-width: none;

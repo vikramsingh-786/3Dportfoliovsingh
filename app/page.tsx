@@ -23,6 +23,7 @@ export default function Home() {
       <ScrollProgress />
       <SpotlightTracker />
       <Nav />
+      <div className="clip-x">
       <main className="relative">
         <Hero />
         <Ticker />
@@ -33,6 +34,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      </div>
       <BackToTop />
     </>
   );
