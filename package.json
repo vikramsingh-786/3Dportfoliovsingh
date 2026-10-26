@@ -17,13 +17,7 @@
     "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^5.5.0",
-    "react-intersection-observer": "^9.16.0",
-    "react-tilt": "^1.0.2",
-    "three": "^0.150.1",
-    "three-mesh-bvh": "^0.6.4",
-    "typewriter-effect": "^2.22.0",
-    "zustand": "^4.4.0"
+    "three": "^0.150.1"
   },
   "devDependencies": {
     "@types/node": "^20.19.0",

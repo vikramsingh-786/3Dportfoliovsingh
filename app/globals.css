@@ -2,67 +2,397 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Space-separated RGB so Tailwind can apply alpha. Dark ("graphite") is the default. */
+/* ───────── Tokens (space-separated RGB so Tailwind can apply alpha). Dark is the default. ───────── */
 :root {
   color-scheme: dark;
-  --bg: 11 11 12;
-  --surface: 22 22 24;
-  --ink: 242 240 235;
-  --muted: 146 146 154;
-  --accent: 255 91 31;
+  --bg: 1 4 13;
+  --surface: 10 14 29;
+  --fg: 255 255 255;
+  --muted: 191 192 200;
+  --subtle: 141 143 160;
+  --line: 29 33 51;
+  --accent: 74 222 128;
+  --glow: 16 185 129;
+  --glow-deep: 4 120 87;
+  --glow-soft: 110 231 183;
+
+  /* Key caps (cards, tiles) */
+  --cap-top: #171c33;
+  --cap-bottom: #0d1121;
+  --cap-side: #010309;
+  --cap-border: rgb(255 255 255 / 0.08);
+  --cap-hi: rgb(255 255 255 / 0.12);
+  /* Raised slabs (big panels) */
+  --slab-a: #131830;
+  --slab-b: #0a0e1d;
+  --slab-c: #05070f;
+  --slab-side: #04060f;
 }
 
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: 242 240 235;
-  --surface: 232 229 222;
-  --ink: 17 17 19;
-  --muted: 92 92 100;
-  --accent: 214 64 8;
+  --bg: 240 242 246;
+  --surface: 255 255 255;
+  --fg: 1 4 13;
+  --muted: 62 66 82;
+  --subtle: 96 100 118;
+  --line: 214 218 228;
+  --accent: 5 150 105;
+  --glow: 16 185 129;
+  --glow-deep: 110 231 183;
+  --glow-soft: 5 150 105;
+
+  --cap-top: #ffffff;
+  --cap-bottom: #eceaf2;
+  --cap-side: #b9b5c6;
+  --cap-border: rgb(0 0 0 / 0.12);
+  --cap-hi: #ffffff;
+  --slab-a: #ffffff;
+  --slab-b: #f6f6fa;
+  --slab-c: #eceaf2;
+  --slab-side: #c9c6d6;
 }
 
+/* ───────── Base ───────── */
 html {
   scroll-behavior: smooth;
-  background: rgb(var(--bg));
 }
 
 body {
   background: rgb(var(--bg));
-  color: rgb(var(--ink));
+  color: rgb(var(--fg));
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
   background: rgb(var(--accent));
-  color: rgb(var(--bg));
+  color: #01040d;
 }
 
-:focus-visible {
-  outline: 2px solid rgb(var(--accent));
-  outline-offset: 3px;
+:where(a, button, input, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid rgb(var(--bg));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgb(var(--accent));
 }
 
+/* ───────── Components ───────── */
 @layer components {
-  /* Page gutter + max width, used by every section. */
   .shell {
-    @apply mx-auto w-full max-w-site px-5 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-site;
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
   }
+
+  /* Small caps label */
   .label {
-    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted;
+    @apply text-[11px] font-extrabold uppercase tracking-[0.16em] text-subtle;
   }
-  .btn {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-medium transition-colors;
+  /* Green mono caps tagline */
+  .tag {
+    @apply font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-accent;
   }
-  .btn-primary {
-    @apply btn bg-ink text-bg hover:bg-accent hover:text-bg;
+
+  /* Tactile 3D key: lit top edge, shaded lip, solid side, drop shadow. Presses on hover/click. */
+  .key-cap {
+    --key-depth: 7px;
+    position: relative;
+    background: linear-gradient(var(--cap-top), var(--cap-bottom));
+    border: 1px solid var(--cap-border);
+    box-shadow:
+      inset 0 1px 0 var(--cap-hi),
+      inset 0 -3px 0 rgb(0 0 0 / 0.3),
+      0 var(--key-depth) 0 var(--cap-side),
+      0 calc(var(--key-depth) + 14px) 26px -6px rgb(0 0 0 / 0.55);
+    transition:
+      translate 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
+      box-shadow 0.22s cubic-bezier(0.2, 0.7, 0.3, 1),
+      border-color 0.22s ease;
   }
-  .btn-ghost {
-    @apply btn border border-line hover:border-ink;
+  .key-cap-press:hover {
+    --key-depth: 4px;
+    translate: 0 3px;
+    border-color: rgb(var(--accent) / 0.5);
   }
-  .chip {
-    @apply rounded-full border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-muted;
+  .key-cap-press:active {
+    --key-depth: 1px;
+    translate: 0 6px;
+  }
+
+  /* Big raised panel. Give it margin-bottom ≥ its depth. */
+  .slab {
+    --slab-depth: 10px;
+    background: linear-gradient(145deg, var(--slab-a) 0%, var(--slab-b) 55%, var(--slab-c) 100%);
+    border: 1px solid rgb(var(--glow) / 0.14);
+    box-shadow:
+      inset 0 1px 0 var(--cap-hi),
+      inset 0 -3px 0 rgb(0 0 0 / 0.25),
+      0 var(--slab-depth) 0 var(--slab-side),
+      0 calc(var(--slab-depth) + 1rem) 2.5rem -0.5rem rgb(0 0 0 / 0.6);
+  }
+
+  /* Green 3D key button */
+  .btn-key {
+    --k: 6px;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold uppercase tracking-[0.06em];
+    color: #01040d;
+    background: linear-gradient(to top right, #16a34a 0%, #22c55e 50%, #4ade80 100%);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      inset 0 -2px 0 rgb(0 0 0 / 0.2),
+      0 var(--k) 0 #0b4a22,
+      0 calc(var(--k) + 12px) 26px -8px rgb(0 0 0 / 0.75),
+      0 0 32px -6px rgb(74 222 128 / 0.55);
+    transition:
+      translate 0.15s cubic-bezier(0.2, 0.7, 0.3, 1),
+      box-shadow 0.15s cubic-bezier(0.2, 0.7, 0.3, 1),
+      filter 0.15s ease-out;
+    isolation: isolate;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-key:hover {
+    --k: 5px;
+    filter: brightness(1.05);
+    translate: 0 1px;
+  }
+  .btn-key:active {
+    --k: 1px;
+    translate: 0 5px;
+  }
+  /* One light streak sweeping across the button, on a loop */
+  .btn-key::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.45) 50%, transparent 80%);
+    transform: translateX(-100%);
+    animation: sweep 4.5s ease-in-out 1.2s infinite;
+  }
+
+  /* Neutral 3D key button (secondary actions) */
+  .btn-cap {
+    @apply key-cap key-cap-press inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold uppercase tracking-[0.06em] text-fg;
+    --key-depth: 5px;
+  }
+
+  /* Panel with a light beam running around its border */
+  .beam {
+    isolation: isolate;
+    position: relative;
+    overflow: hidden;
+    padding: 1px;
+    background: rgb(var(--accent) / 0.3);
+  }
+  .beam::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    width: 190%;
+    aspect-ratio: 1;
+    background: conic-gradient(transparent 0deg 190deg, rgb(var(--accent) / 0.9) 268deg, rgb(187 247 208 / 0.95) 310deg, transparent 350deg);
+    animation: beam 9s linear infinite;
+  }
+
+  .text-grad {
+    color: transparent;
+    background-image: linear-gradient(95deg, rgb(var(--fg)) 0%, rgb(var(--subtle)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .field {
+    @apply w-full rounded-2xl px-4 py-3.5 text-base text-fg placeholder:text-subtle/80 focus:outline-none;
+    background: rgb(var(--bg) / 0.6);
+    border: 1px solid rgb(0 0 0 / 0.4);
+    box-shadow:
+      inset 4px 4px 10px rgb(0 0 0 / 0.35),
+      inset -3px -3px 8px rgb(255 255 255 / 0.04);
+  }
+  .field:focus {
+    border-color: rgb(var(--accent) / 0.7);
+  }
+}
+
+/* ───────── Motion ───────── */
+/* Page-load entrance: staggered via --d */
+.enter {
+  opacity: 0;
+  animation: enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) forwards;
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  55%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes beam {
+  from {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Headline: one bright light sweep across the letters, played once */
+.shimmer {
+  color: transparent;
+  background-image: linear-gradient(100deg, transparent 28%, rgb(74 222 128 / 0.9) 40%, #fff 46%, #fff 54%, rgb(74 222 128 / 0.9) 60%, transparent 72%);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 0.35em rgb(255 255 255 / 0.6));
+  animation: shimmer 1.3s cubic-bezier(0.4, 0, 0.2, 1) var(--d, 0s) both;
+}
+@keyframes shimmer {
+  from {
+    background-position: 130% 0;
+  }
+  to {
+    background-position: -30% 0;
+  }
+}
+
+/* Rubber stamp: drops from above, squashes on impact, leaves an ink flash */
+.stamp {
+  transform: rotate(-8deg);
+  animation: stamp 0.55s var(--d, 0s) both;
+}
+@keyframes stamp {
+  0% {
+    opacity: 0;
+    transform: rotate(-10deg) scale(2.6);
+    filter: blur(2px);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  20% {
+    opacity: 1;
+  }
+  62% {
+    transform: rotate(-8deg) scale(0.94, 0.92);
+    filter: blur(0) brightness(1.6);
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-8deg);
+    filter: none;
+  }
+}
+.stamp-impact {
+  animation: stamp-impact 0.6s ease-out calc(var(--d, 0s) + 0.34s) both;
+}
+@keyframes stamp-impact {
+  from {
+    opacity: 0.85;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+/* Slot-machine digits: each strip holds 0–9 twice and lands on --n. Rows are 1.1em tall. */
+.odo-strip {
+  transform: translateY(calc((10 + var(--n)) * -1.1em));
+  animation: odo 0.9s cubic-bezier(0.2, 0.75, 0.15, 1) var(--d, 0s) both;
+}
+@keyframes odo {
+  from {
+    transform: translateY(0);
+  }
+}
+
+/* Background chart */
+.candle-grow {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: candle-grow 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+@keyframes candle-grow {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.chart-draw {
+  stroke-dasharray: 1;
+  animation: chart-draw 2s linear both;
+}
+@keyframes chart-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.candle-live {
+  animation: candle-live 1.6s ease-in-out infinite alternate;
+}
+@keyframes candle-live {
+  to {
+    opacity: 0.45;
+  }
+}
+
+.halo {
+  animation: halo 7s ease-in-out 1.6s infinite alternate;
+}
+@keyframes halo {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+/* Process stepper fill */
+.step-fill {
+  width: 0%;
+  animation: step-fill linear forwards;
+}
+@keyframes step-fill {
+  to {
+    width: 100%;
+  }
+}
+
+/* Phones/touch: skip the always-running decorative loops */
+@media (max-width: 1023px), (pointer: coarse) {
+  .halo,
+  .beam::before {
+    animation: none !important;
+  }
+  .beam::before {
+    transform: translate(-50%, -50%) rotate(300deg);
   }
 }
 
@@ -70,10 +400,34 @@ body {
   html {
     scroll-behavior: auto;
   }
+  .enter {
+    opacity: 1;
+    animation: none !important;
+  }
+  .shimmer {
+    display: none;
+  }
+  .stamp,
+  .stamp-impact,
+  .odo-strip,
+  .candle-grow,
+  .chart-draw,
+  .candle-live,
+  .halo,
+  .btn-key::after,
+  .beam::before {
+    animation: none !important;
+  }
+  .stamp-impact,
+  .btn-key::after {
+    display: none;
+  }
+  .beam::before {
+    transform: translate(-50%, -50%) rotate(300deg);
+  }
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }

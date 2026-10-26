@@ -1,7 +1,7 @@
 # Vikram Singh — 3D Portfolio
 
 3D portfolio built with Next.js 14, react-three-fiber, Tailwind and Framer Motion.
-A single glass crystal (one fixed WebGL canvas) follows you through numbered chapters, switching sides between sections on desktop; on phones and tablets it lives in the hero only.
+Dark navy + green "tactile" design: 3D key-cap cards and buttons that press, a fixed grid/halo/candlestick backdrop, and a 3D macropad in the hero whose keys type by themselves.
 
 ```bash
 npm install
@@ -9,7 +9,7 @@ npm run dev   # http://localhost:3000
 ```
 
 - Content (projects, services, stack, links): `app/lib/data.ts`
-- 3D scene: `app/components/Scene.tsx` (a section joins the choreography with a `data-chapter` attribute)
+- 3D macropad: `app/components/Keypad.tsx`; backdrop: `app/components/Background.tsx`
 - Design tokens: `tailwind.config.js`, `app/globals.css`
 
-Respects `prefers-reduced-motion` (crystal stops spinning and snaps between positions).
+Respects `prefers-reduced-motion` (no typing, stamps, shimmer or looping effects).
