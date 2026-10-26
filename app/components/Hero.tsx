@@ -70,7 +70,7 @@ function Stage() {
           </div>
         </div>
 
-        <StatCard value={stats[0].value} label={stats[0].label} className="-left-[22%] bottom-[30%] sm:-left-[18%]" delay={1.9} />
+        <StatCard value={stats[0].value} label={stats[0].label} className="-left-[30%] bottom-[18%] sm:-left-[26%] sm:bottom-[20%]" delay={1.9} />
         <StatCard value={stats[2].value} label={stats[2].label} className="-right-[20%] bottom-[10%] sm:-right-[16%]" delay={2.3} />
 
         {/* CodeChef stamp */}
