@@ -27,26 +27,42 @@ export default function Carousel({ children, label, gridClass, interval = 3800 }
     const el = track.current;
     if (!el) return;
     let frame = 0;
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
     const onScroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const mid = el.scrollLeft + el.clientWidth / 2;
+        const coverflow = mobile.matches && !still.matches;
         let best = 0;
         let dist = Infinity;
         Array.from(el.children).forEach((c, i) => {
           const n = c as HTMLElement;
-          const dd = Math.abs(n.offsetLeft + n.clientWidth / 2 - mid);
+          const off = n.offsetLeft + n.clientWidth / 2 - mid;
+          const dd = Math.abs(off);
           if (dd < dist) {
             dist = dd;
             best = i;
+          }
+          // Phones: 3D coverflow — side cards turn away and shrink as they leave the centre.
+          if (coverflow) {
+            const t = Math.max(-1, Math.min(1, off / n.clientWidth));
+            n.style.transform = `perspective(900px) rotateY(${-t * 28}deg) scale(${1 - Math.abs(t) * 0.1})`;
+            n.style.opacity = String(1 - Math.abs(t) * 0.35);
+          } else {
+            n.style.transform = '';
+            n.style.opacity = '';
           }
         });
         setActive(best);
       });
     };
+    onScroll();
     el.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     return () => {
       el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
       cancelAnimationFrame(frame);
     };
   }, []);

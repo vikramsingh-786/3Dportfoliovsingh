@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
 import { process as steps, services } from '../lib/data';
 import Carousel from './Carousel';
-import { Reveal, SectionHeader } from './ui';
+import { Reveal, SectionHeader, Tilt } from './ui';
 
 const STEP_MS = 1000;
 
@@ -93,16 +93,17 @@ function Process() {
 }
 
 const Services = () => (
-  <section id="services" className="relative py-24 sm:py-32">
+  <section id="services" className="relative py-14 sm:py-24 lg:py-32">
     <div className="shell">
       <SectionHeader index="02" label="Services" title="What I can build for you." />
 
       <Carousel label="Services" gridClass="md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3">
         {services.map((s, i) => (
-          <Reveal key={s.title} delay={(i % 3) * 0.06} className="panel spotlight group h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
-            <p className="font-mono text-xs font-bold text-accent">0{i + 1}</p>
-            <h3 className="mt-4 text-xl font-extrabold tracking-tight">{s.title}</h3>
-            <ul className="mt-4 space-y-2 text-sm text-muted">
+          <Reveal key={s.title} delay={(i % 3) * 0.06} className="h-full">
+          <Tilt className="panel spotlight group h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
+            <p className="pop font-mono text-xs font-bold text-accent">0{i + 1}</p>
+            <h3 className="pop mt-4 text-xl font-extrabold tracking-tight">{s.title}</h3>
+            <ul className="pop-sm mt-4 space-y-2 text-sm text-muted">
               {s.features.map((f) => (
                 <li key={f} className="flex gap-2.5">
                   <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -110,6 +111,7 @@ const Services = () => (
                 </li>
               ))}
             </ul>
+          </Tilt>
           </Reveal>
         ))}
       </Carousel>

@@ -242,16 +242,25 @@ body {
       0 0 24px -4px rgb(var(--accent) / 0.45);
   }
 
+  /* Content that sits forward inside a <Tilt> card */
+  .pop {
+    transform: translateZ(36px);
+  }
+  .pop-sm {
+    transform: translateZ(18px);
+  }
+
   /* Recessed track (filter tabs) */
   .track {
     background: rgb(var(--bg) / 0.6);
     box-shadow: var(--track-shadow);
   }
 
-  /* Cursor-following glow (positions fed by SpotlightTracker). Sits under the card's content. */
+  /* Cursor-following glow (positions fed by SpotlightTracker). Sits under the card's content.
+     Needs a stacking context for the z-index:-1 glow: a <Tilt> card has one (transform); otherwise
+     add `isolate`. Not set here because isolation would flatten a Tilt card's 3D children. */
   .spotlight {
     position: relative;
-    isolation: isolate;
   }
   .spotlight::after {
     content: '';

@@ -4,17 +4,17 @@ import Image from 'next/image';
 import { useRef } from 'react';
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { experience, profile, socials, stats } from '../lib/data';
-import { Magnetic } from './ui';
+import { Magnetic, Tilt } from './ui';
 
 const d = (s: number) => ({ '--d': `${s}s` }) as React.CSSProperties;
 
 // Stat card stamped onto the stage after the portrait lands.
 const StatCard = ({ value, label, className, delay }: { value: string; label: string; className: string; delay: number }) => (
   <div className={`stamp-flat absolute z-20 ${className}`} style={d(delay)}>
-    <div className="slab rounded-2xl px-3.5 py-2.5 [--slab-depth:6px] sm:px-4 sm:py-3">
+    <Tilt max={14} className="slab pointer-events-auto rounded-2xl px-3.5 py-2.5 [--slab-depth:6px] sm:px-4 sm:py-3">
       <p className="font-mono text-lg font-medium leading-none text-accent [text-shadow:0_0_14px_rgb(74_222_128/0.5)] sm:text-2xl">{value}</p>
       <p className="mt-1 text-[9px] font-extrabold uppercase tracking-[0.14em] text-subtle sm:text-[10px]">{label}</p>
-    </div>
+    </Tilt>
   </div>
 );
 

@@ -110,6 +110,42 @@ export const ScrollText = ({ segments, className = '' }: { segments: { text: str
   );
 };
 
+/**
+ * 3D card: tilts toward the pointer on a spring and lifts a little. preserve-3d lets children with
+ * `.pop` / `.pop-sm` sit forward in depth so they visibly separate as it tilts. Mouse only; off for
+ * reduced motion. Keep it on its own element: it owns `transform`, so don't combine with Reveal.
+ */
+export const Tilt = ({ children, className = '', max = 8, style }: { children: React.ReactNode; className?: string; max?: number; style?: React.CSSProperties }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const fine = useFinePointer();
+  const rx = useSpring(0, { stiffness: 220, damping: 20 });
+  const ry = useSpring(0, { stiffness: 220, damping: 20 });
+  const lift = useSpring(1, { stiffness: 260, damping: 22 });
+  const on = fine && !reduced;
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ ...style, rotateX: rx, rotateY: ry, scale: lift, transformPerspective: 1000, transformStyle: 'preserve-3d' }}
+      onPointerMove={(e) => {
+        if (!on || !ref.current) return;
+        const r = ref.current.getBoundingClientRect();
+        ry.set(((e.clientX - r.left) / r.width - 0.5) * max * 2);
+        rx.set(-((e.clientY - r.top) / r.height - 0.5) * max * 2);
+        lift.set(1.02);
+      }}
+      onPointerLeave={() => {
+        rx.set(0);
+        ry.set(0);
+        lift.set(1);
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 // Child drifts toward the pointer on a spring (mouse only, off for reduced motion).
 export const Magnetic = ({ children, strength = 0.3, className = '' }: { children: React.ReactNode; strength?: number; className?: string }) => {
   const ref = useRef<HTMLSpanElement>(null);

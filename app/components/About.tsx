@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { achievements, education, experience, profile, skillGroups, stats } from '../lib/data';
-import { Odometer, Reveal, ScrollText, SectionHeader } from './ui';
+import { Odometer, Reveal, ScrollText, SectionHeader, Tilt } from './ui';
 
 const history = [
   { year: '2026', title: experience[0].role, org: experience[0].org, period: experience[0].period, note: experience[0].note, current: true },
@@ -126,7 +126,7 @@ function Journey() {
               animate={on ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: desk ? (right ? 56 : -56) : 32, scale: 0.94 }}
               transition={{ type: 'spring', stiffness: 260, damping: 22 }}
             >
-              <div className={h.current ? 'beam rounded-2xl' : ''}>
+              <Tilt max={6} className={h.current ? 'beam rounded-2xl' : 'rounded-2xl'}>
                 <div className={`rounded-2xl p-5 sm:p-6 ${h.current ? 'bg-surface' : 'panel'}`}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="font-mono text-xs font-bold text-subtle">
@@ -141,7 +141,7 @@ function Journey() {
                   </p>
                   {h.note && <p className="mt-3 text-sm leading-relaxed text-muted">{h.note}</p>}
                 </div>
-              </div>
+              </Tilt>
             </motion.div>
           </li>
         );
@@ -151,12 +151,13 @@ function Journey() {
 }
 
 const About = () => (
-  <section id="about" className="relative py-24 sm:py-32">
+  <section id="about" className="relative py-14 sm:py-24 lg:py-32">
     <div className="shell">
       <SectionHeader index="01" label="About" title="Design-minded engineer." />
 
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-        <Reveal className="slab mb-[10px] rounded-3xl p-6 sm:p-10">
+        <Reveal className="h-full">
+        <Tilt max={4} className="slab mb-[10px] h-full rounded-3xl p-6 sm:p-10">
           <ScrollText
             className="text-xl font-semibold leading-snug sm:text-2xl"
             segments={[
@@ -174,15 +175,18 @@ const About = () => (
               <p className="text-sm text-subtle">{profile.role}</p>
             </div>
           </div>
+        </Tilt>
         </Reveal>
 
         <dl className="grid grid-cols-3 gap-3 sm:gap-4 lg:grid-cols-1">
           {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.08} className="well flex flex-col justify-center rounded-2xl px-3 py-5 sm:px-6">
+            <Reveal key={s.label} delay={i * 0.08}>
+            <Tilt max={12} className="well flex h-full flex-col justify-center rounded-2xl px-3 py-5 sm:px-6">
               <dd className="font-mono text-xl font-medium tracking-tight text-accent [text-shadow:0_0_18px_rgb(74_222_128/0.45)] min-[400px]:text-2xl sm:text-4xl">
                 <Odometer value={s.value} />
               </dd>
               <dt className="label mt-1">{s.label}</dt>
+            </Tilt>
             </Reveal>
           ))}
         </dl>
@@ -199,6 +203,7 @@ const About = () => (
         <>
           <Reveal>
             <h3 className="label mb-5 text-center lg:text-left">Skills</h3>
+            <Tilt max={3}>
             <dl className="slab mb-[10px] space-y-5 rounded-2xl p-5 sm:p-6">
               {skillGroups.map((g) => (
                 <div key={g.name}>
@@ -213,10 +218,12 @@ const About = () => (
                 </div>
               ))}
             </dl>
+            </Tilt>
           </Reveal>
 
           <Reveal>
             <h3 className="label mb-5 text-center lg:text-left">Achievements</h3>
+            <Tilt max={3}>
             <ul className="slab mb-[10px] space-y-3 rounded-2xl p-5 sm:p-6">
               {achievements.map((a) => (
                 <li key={a} className="flex gap-3 font-medium leading-relaxed">
@@ -225,6 +232,7 @@ const About = () => (
                 </li>
               ))}
             </ul>
+            </Tilt>
           </Reveal>
         </>
       </div>

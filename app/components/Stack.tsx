@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { tech } from '../lib/data';
-import { Reveal, SectionHeader } from './ui';
+import { Reveal, SectionHeader, Tilt } from './ui';
 
 const groups = ['All', 'Frontend', 'Backend', 'Cloud', 'Tools'] as const;
 
@@ -14,7 +14,7 @@ const Stack = () => {
   const reduced = useReducedMotion();
 
   return (
-    <section id="tech" className="relative py-24 sm:py-32">
+    <section id="tech" className="relative py-14 sm:py-24 lg:py-32">
       <div className="shell">
         <SectionHeader index="03" label="Stack" title="Tools I reach for." />
 
@@ -52,12 +52,13 @@ const Stack = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={reduced ? undefined : { opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.35, delay: reduced ? 0 : Math.min(i, 14) * 0.015, ease: [0.33, 1, 0.68, 1] }}
-              className="panel spotlight group flex flex-col items-center gap-3 rounded-2xl px-2 py-5 transition-colors duration-300 hover:border-accent/50"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2 transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-[-6deg]">
+              <Tilt max={16} className="panel spotlight group flex h-full flex-col items-center gap-3 rounded-2xl px-2 py-5 transition-colors duration-300 hover:border-accent/50">
+              <span className="pop flex h-11 w-11 items-center justify-center rounded-xl bg-white p-2">
                 <Image src={t.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
               </span>
-              <span className="text-center text-xs font-bold text-muted">{t.name}</span>
+              <span className="pop-sm text-center text-xs font-bold text-muted">{t.name}</span>
+              </Tilt>
             </motion.li>
           ))}
           </AnimatePresence>

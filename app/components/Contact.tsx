@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { profile, socials } from '../lib/data';
-import { Magnetic, Reveal, SectionHeader } from './ui';
+import { Magnetic, Reveal, SectionHeader, Tilt } from './ui';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -62,13 +62,14 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative py-24 sm:py-32">
+    <section id="contact" className="relative py-14 sm:py-24 lg:py-32">
       <div className="shell">
         <SectionHeader index="05" label="Contact" title="Let's build something." />
 
         <div className="grid items-stretch gap-8 lg:grid-cols-[1fr_1.3fr]">
           {/* Direct-contact panel: same height as the form so the two columns balance */}
-          <Reveal className="slab mb-[10px] flex flex-col rounded-3xl p-6 sm:p-8">
+          <Reveal className="h-full">
+          <Tilt max={4} className="slab mb-[10px] flex h-full flex-col rounded-3xl p-6 sm:p-8">
             <p className="label">Reach me directly</p>
             <a href={`mailto:${profile.email}`} className="group mt-4 inline-flex max-w-full items-center gap-3 text-xl font-extrabold tracking-tight sm:text-2xl">
               <span className="break-all underline decoration-accent/40 decoration-2 underline-offset-8 transition-colors group-hover:decoration-accent">{profile.email}</span>
@@ -101,6 +102,7 @@ const Contact = () => {
               <span aria-hidden className="live-dot h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_rgb(74_222_128/0.9)]" />
               Bengaluru, India
             </p>
+          </Tilt>
           </Reveal>
 
           {/* Form panel with the running light beam around its edge */}

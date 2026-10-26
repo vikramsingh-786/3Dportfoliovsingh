@@ -3,14 +3,15 @@
 import Image from 'next/image';
 import { projects } from '../lib/data';
 import Carousel from './Carousel';
-import { Magnetic, Reveal, SectionHeader } from './ui';
+import { Magnetic, Reveal, SectionHeader, Tilt } from './ui';
 
 type Project = (typeof projects)[number];
 
 // One project card. `featured` puts image and text side by side on large screens.
 function Card({ p, i, featured = false }: { p: Project; i: number; featured?: boolean }) {
   return (
-    <article className={`slab spotlight group mb-[10px] flex flex-col overflow-hidden rounded-3xl ${featured ? 'md:h-full' : 'h-full'} ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
+    <Tilt max={featured ? 3 : 6} className={`rounded-3xl ${featured ? 'md:h-full' : 'h-full'}`}>
+    <article className={`slab spotlight isolate group mb-[10px] flex h-full flex-col overflow-hidden rounded-3xl ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
       <a
         href={p.demo}
         target="_blank"
@@ -53,13 +54,14 @@ function Card({ p, i, featured = false }: { p: Project; i: number; featured?: bo
         </div>
       </div>
     </article>
+    </Tilt>
   );
 }
 
 const Work = () => {
   const [lead, ...rest] = projects;
   return (
-    <section id="portfolio" className="relative py-24 sm:py-32">
+    <section id="portfolio" className="relative py-14 sm:py-24 lg:py-32">
       <div className="shell">
         <SectionHeader index="04" label="Work" title="Selected projects." />
 
