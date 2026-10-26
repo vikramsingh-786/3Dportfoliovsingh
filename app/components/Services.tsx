@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
 import { process as steps, services } from '../lib/data';
+import Carousel from './Carousel';
 import { Reveal, SectionHeader } from './ui';
 
 const STEP_MS = 2600;
@@ -47,20 +48,22 @@ const Services = () => (
     <div className="shell">
       <SectionHeader index="02" label="Services" title="What I can build for you." />
 
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <Carousel label="Services" gridClass="md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3">
         {services.map((s, i) => (
-          <li key={s.title}>
-            <Reveal delay={(i % 3) * 0.06} className="panel group h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
-              <p className="font-mono text-xs font-bold text-accent">0{i + 1}</p>
-              <h3 className="mt-4 text-xl font-extrabold tracking-tight">{s.title}</h3>
-              <ul className="mt-4 space-y-2 text-sm text-muted">
-                {s.features.map((f) => (
-                  <li key={f} className="flex gap-2.5">
-                    <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
+          <Reveal key={s.title} delay={(i % 3) * 0.06} className="panel group h-full rounded-3xl p-6 transition-colors duration-300 hover:border-accent/50">
+            <p className="font-mono text-xs font-bold text-accent">0{i + 1}</p>
+            <h3 className="mt-4 text-xl font-extrabold tracking-tight">{s.title}</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted">
+              {s.features.map((f) => (
+                <li key={f} className="flex gap-2.5">
+                  <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        ))}
+      </Carousel>
             </Reveal>
           </li>
         ))}

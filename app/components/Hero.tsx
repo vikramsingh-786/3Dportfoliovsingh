@@ -55,13 +55,13 @@ function Stage() {
             <div className="beam h-full w-full rounded-[2rem]">
               <div className="relative h-full w-full overflow-hidden rounded-[calc(2rem-1px)] bg-surface">
                 <Image
-                  src="/hero.png"
+                  src="/vikram.jpg"
                   alt="Portrait of Vikram Singh"
                   fill
                   priority
                   sizes="(min-width:1024px) 26rem, 68vw"
                   className="object-cover"
-                  style={{ objectPosition: '50% 30%' }}
+                  style={{ objectPosition: '50% 38%' }}
                 />
                 {/* Bottom fade into the pedestal */}
                 <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/90 to-transparent" />

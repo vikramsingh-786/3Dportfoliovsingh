@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     description: 'Full-stack developer and UI designer.',
     url: 'https://your-domain.com', // TODO: replace with the real domain
     siteName: 'Vikram Singh Portfolio',
-    images: [{ url: '/hero.png', width: 1200, height: 1599, alt: 'Vikram Singh' }],
+    images: [{ url: '/vikram.jpg', width: 955, height: 1125, alt: 'Vikram Singh' }],
     locale: 'en_US',
     type: 'website',
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Vikram Singh — Interactive 3D Portfolio',
     description: 'Full-stack developer and UI designer.',
-    images: ['/hero.png'],
+    images: ['/vikram.jpg'],
   },
 };
 

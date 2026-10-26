@@ -23,7 +23,7 @@ const About = () => (
           </p>
           <div className="mt-8 flex items-center gap-4">
             <span className="panel relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl">
-              <Image src="/hero.png" alt="Portrait of Vikram Singh" fill sizes="64px" className="object-cover object-top" />
+              <Image src="/vikram.jpg" alt="Portrait of Vikram Singh" fill sizes="64px" className="object-cover" style={{ objectPosition: '50% 35%' }} />
             </span>
             <div>
               <p className="font-extrabold">{profile.name}</p>

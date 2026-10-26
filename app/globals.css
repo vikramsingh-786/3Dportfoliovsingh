@@ -234,6 +234,14 @@ body {
   }
 }
 
+/* Horizontal scrollers: keep swipe, hide the bar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ───────── Motion ───────── */
 /* Page-load entrance: staggered via --d */
 .enter {

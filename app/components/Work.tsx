@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { projects } from '../lib/data';
+import Carousel from './Carousel';
 import { Reveal, SectionHeader } from './ui';
 
 type Project = (typeof projects)[number];
@@ -9,7 +10,7 @@ type Project = (typeof projects)[number];
 // One project card. `featured` puts image and text side by side on large screens.
 function Card({ p, i, featured = false }: { p: Project; i: number; featured?: boolean }) {
   return (
-    <article className={`slab group mb-[10px] flex flex-col overflow-hidden rounded-3xl md:h-full ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
+    <article className={`slab group mb-[10px] flex flex-col overflow-hidden rounded-3xl ${featured ? 'md:h-full' : 'h-full'} ${featured ? 'lg:grid lg:grid-cols-[1.25fr_1fr]' : ''}`}>
       <a
         href={p.demo}
         target="_blank"
@@ -63,15 +64,13 @@ const Work = () => {
           <Card p={lead} i={0} featured />
         </Reveal>
 
-        <ol className="grid gap-8 md:grid-cols-2">
+        <Carousel label="More projects" gridClass="md:grid md:grid-cols-2 md:gap-8" interval={4500}>
           {rest.map((p, i) => (
-            <li key={p.title}>
-              <Reveal delay={(i % 2) * 0.08} className="md:h-full">
-                <Card p={p} i={i + 1} />
-              </Reveal>
-            </li>
+            <Reveal key={p.title} delay={(i % 2) * 0.08} className="h-full">
+              <Card p={p} i={i + 1} />
+            </Reveal>
           ))}
-        </ol>
+        </Carousel>
       </div>
     </section>
   );
