@@ -4,7 +4,9 @@ export const profile = {
   intro:
     'I build fast, considered web products — from the database to the last pixel of the interface.',
   email: 'bobvik2003@gmail.com',
-  cv: '/CV.pdf',
+  // Google Drive direct-download link: update the file in Drive and the site picks it up.
+  // The Drive file must be shared as "Anyone with the link" or visitors hit a sign-in page.
+  cv: 'https://drive.google.com/uc?export=download&id=1Sz-zZq8hc5oYEsDquonGr4Q5YCjDmlTo',
 };
 
 export const socials = [

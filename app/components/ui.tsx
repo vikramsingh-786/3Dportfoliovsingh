@@ -284,7 +284,7 @@ export const StickyCV = ({ href }: { href: string }) => {
           exit={reduced ? { opacity: 0 } : { opacity: 0, y: 40 }}
           transition={{ type: 'spring', stiffness: 300, damping: 26 }}
         >
-          <a href={href} download className="btn-key btn-shine w-full sm:w-auto">
+          <a href={href} target="_blank" rel="noopener noreferrer" className="btn-key btn-shine w-full sm:w-auto">
             <DownloadIcon />
             Download CV
           </a>
@@ -296,7 +296,7 @@ export const StickyCV = ({ href }: { href: string }) => {
 
 // Compact navbar version (desktop).
 export const NavCV = ({ href }: { href: string }) => (
-  <a href={href} download className="btn-key hidden !min-h-11 !px-5 !text-xs lg:inline-flex">
+  <a href={href} target="_blank" rel="noopener noreferrer" className="btn-key hidden !min-h-11 !px-5 !text-xs lg:inline-flex">
     <DownloadIcon />
     Download CV
   </a>

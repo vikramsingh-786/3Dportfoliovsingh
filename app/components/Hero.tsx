@@ -142,7 +142,7 @@ const Hero = () => {
             </a>
           </Magnetic>
           <Magnetic>
-            <a href={profile.cv} download className="btn-cap w-full sm:w-auto">
+            <a href={profile.cv} target="_blank" rel="noopener noreferrer" className="btn-cap w-full sm:w-auto">
               Download CV
             </a>
           </Magnetic>
